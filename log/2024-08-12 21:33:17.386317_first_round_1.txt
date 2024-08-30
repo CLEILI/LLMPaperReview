@@ -1,0 +1,32 @@
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+85.00
+The paper presents a strong research background addressing critical issues in IoT identity authentication. It has a complete structure and original content, proposing a novel blockchain-based scheme. However, the details on high-tech standards for experiments are unclear, and the effectiveness of the algorithm needs further validation.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+88.00
+This paper demonstrates a strong research background and presents a clear theme with original contributions to physical layer security. The structured analysis and effective algorithm design are commendable, although details on high-tech standards for experiments are lacking.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+82.00
+The paper addresses an important question regarding blockchain merging with original solutions. It presents a clear theme and effective algorithm design, but lacks detailed information on high-tech standards for experiments.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+90.00
+This paper presents a novel control algorithm with a strong research background and clear contributions to industrial IoT. The analysis is thorough, and the algorithm is validated through experiments, although some details on high-tech standards are not specified.
+
+A Flexible Numerology Resource Allocation to Guarantee Delay and Reliability Requirements in 5G NR-V2X Networks
+86.00
+The paper addresses significant challenges in 5G NR-V2X networks with original contributions. It presents a clear theme and effective algorithm design, but lacks clarity on high-tech standards for experiments.
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+92.00
+The paper addresses crucial challenges in Wi-Fi indoor localization with an innovative FEKNN approach that shows significant improvement in accuracy. Extensive experiments validate the method's effectiveness, but it also highlights the limitations associated with undetected RSS values and device variability.
+
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+85.50
+This paper presents a novel cooperative jamming scheme addressing physical layer security in mobility contexts. While it introduces valuable new metrics for evaluating security performance, the analysis lacks detailed validation for experiments, requiring further clarification on experimental settings and outcomes.
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+89.00
+The paper contributes significantly to the area of interpretability in GNN-based intrusion detection systems, allowing better understanding and responsiveness to security alerts. It excels in demonstrating substantial improvements in interpretability metrics compared to existing methods.
+

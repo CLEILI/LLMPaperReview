@@ -1,0 +1,20 @@
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+85.00
+The paper effectively addresses the challenge of enhancing interpretability in GNN-based intrusion detection systems, providing clarity on decision-making processes. However, more detailed exploration of limitations in practical applications would be beneficial.
+
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+75.00
+The paper is well-structured and covers essential aspects of cross-domain identity authentication in IoT, yet it lacks detailed evaluations of the proposed framework's limitations in real-world scenarios.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+80.00
+It contributes valuable solutions for blockchain integration, demonstrating effective approaches for merging diverse systems. Inclusion of additional real-world case studies would enhance its practical relevance.
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+90.00
+This paper presents original and effective methodology for indoor localization, validated by extensive experiments. Further analysis on the algorithm's scalability could improve its contribution to the field.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+88.00
+The paper offers a clear summary of its hierarchical game framework and demonstrates effective physical layer security techniques using a DRL-based approach. Suggestions for future work could further enhance its impact.
+

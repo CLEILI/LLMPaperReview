@@ -1,0 +1,24 @@
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+85.00
+The paper addresses important issues in IoT identity authentication, presenting a strong research background and original contributions. It follows a complete structure and has a clear theme. However, the clarity of the conclusion and detailed experimental validation need further examination.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+80.00
+The paper presents original solutions for merging blockchain systems and follows a complete structure. While it addresses a significant question, the clarity of the conclusion and detailed experimental analyses require further review for a comprehensive assessment.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+90.00
+The paper provides a strong contribution to industrial IoT with an original approach to servo control using deep reinforcement learning. It has a clear theme, detailed experiments, and a reliable conclusion, making it a valuable addition to the field.
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+95.75
+The paper 'FEKNN: A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' demonstrates a strong research background in Wi-Fi indoor localization, addressing the important question of enhancing accuracy through feature enhancement and a refined KNN algorithm. The paper has a complete structure, clear theme, analysis, and conclusion. It contributes significantly to the existing knowledge system by refining RSSI data distribution and achieving state-of-the-art performance. The experiments and algorithm design are described in detail, ensuring feasibility and effectiveness. The paper acknowledges limitations and outlines future research directions, showcasing its thoroughness and potential impact.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+87.50
+The paper 'A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications' presents a structured format with a clear theme, analysis, and conclusion. It contributes to enhancing the existing knowledge system by proposing a dynamic game framework for PLS-aware wireless networks with third-party collaborative users. While the experiments and statistics are briefly mentioned, the paper lacks detailed descriptions in this aspect. The algorithm design ensures feasibility and effectiveness, showcasing the potential of the proposed solution. The conclusion highlights the framework's effectiveness and the superiority of the DRL approach, supported by simulation results.
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+92.00
+The paper 'An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer' addresses the lack of interpretability in GNN-based IDS, enhancing security operators' understanding of IDS decisions. The paper has a clear theme, analysis, and conclusion, contributing to the existing knowledge system by introducing an interpreter that improves IDS interpretability. While the experiments and analyses are not detailed, the algorithm design ensures feasibility and effectiveness, surpassing baseline methods. The conclusion emphasizes the interpreter's role in refining security measures and enhancing intrusion detection strategies, showcasing its potential impact on cybersecurity efforts.
+

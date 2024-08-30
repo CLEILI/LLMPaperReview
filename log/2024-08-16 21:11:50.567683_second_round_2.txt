@@ -1,0 +1,24 @@
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+78.50
+The paper presents a strong approach to Wi-Fi indoor localization with a comprehensive structure. However, more detail is needed in the experiments and to support the conclusions. Overall, the originality and research background are commendable, but the analysis section requires improvement.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+82.00
+This paper has a strong theoretical background and addresses crucial security issues. The overall flow needs some reorganization, but its originality is notable. More clarity in the methodology and comprehensive experimental results are essential for validation.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+80.00
+This paper introduces a novel framework that significantly contributes to blockchain technology. Writing quality is good, but transitions should be improved. Detailed analysis and experimental descriptions are necessary to enhance understanding and support the conclusions.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+92.00
+This paper presents a groundbreaking approach using DRL for servo control in industrial IoT, with clear methodology, comprehensive analysis, and significant contributions to the field. However, a more detailed description of the experimental setup could enhance reproducibility.
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+94.50
+This paper introduces an innovative interpretation method for provenance-based intrusion detection using GNNExplainer. It is well-structured and offers thorough experimental analysis. The original approach serves as a significant contribution to the field of cybersecurity, although there might be room for deeper exploration of scalability.
+
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+93.00
+This paper offers a novel blockchain-based solution for cross-domain identity authentication in IoT, with a clear and well-structured presentation. The experimental analysis is thorough and supports the proposed method's feasibility and effectiveness. The paper could benefit from more detailed discussions on potential real-world implementations.
+

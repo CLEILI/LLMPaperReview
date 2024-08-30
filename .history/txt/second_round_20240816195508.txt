@@ -1,0 +1,40 @@
+A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm
+92.50
+The paper is well-structured, original, and makes a significant contribution to the field. The experiments and analysis are thorough, and the conclusions are well-supported. The approach to using deep learning for data aggregation is innovative and addresses a critical need in mobile crowd-sensing.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+85.00
+The paper is original and addresses an important issue in blockchain interoperability. However, it could benefit from more detailed analysis and validation. The structure is clear, but some sections, particularly the methodology, could be more detailed.
+
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+90.00
+The paper is well-structured, original, and makes a significant contribution to the field of secure transmission. The experiments and analysis are thorough, and the conclusions are well-supported. The approach to using cooperative jamming for secure transmission is innovative and highly relevant.
+
+A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm
+86.50
+The paper offers a strong research background and addresses critical challenges in mobile crowd sensing (MCS) by focusing on data quality and utilizing deep learning techniques. It is structured well with a cohesive theme, thorough analysis, and a clear conclusion. While validating the framework through simulations, the paper could benefit from providing more comprehensive details about experiments and statistical analysis, to fully ensure high standards. The proposed algorithm using the EM technique and deep learning appears feasible and effective, with its contributions being significant and valuable to the MCS field. Further refinements in methodological descriptions and detailed analyses could enhance its reliability and scholarly impact.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+91.75
+This paper presents a solid research foundation, addressing the critical issue of blockchain interoperability with creative and novel solutions. It has a complete structure, clear analysis, and a well-detailed conclusion. The HCC and HMIA algorithms are shown to be both feasible and effective through rigorous evaluations. While the methodological rigor and experimental details are comprehensive, further emphasis on real-world applicability and detailed comparative analyses with existing methods could bolster its reliability. The paper's contributions are substantial, enhancing knowledge in the area of blockchain merging, and driving forward the development of unified blockchain ecosystems.
+
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+88.25
+The paper addresses the significant and timely issue of physical layer security in mobile wireless networks. It proposes an innovative cooperative jamming scheme based on soft handoff, demonstrating clear, correct, and valuable conclusions backed by well-conducted numerical simulations. However, a deeper dive into the methodological rigor and statistical techniques employed would further strengthen its scholarly impact. Overall, the proposed algorithm and its evaluations suggest feasibility and efficacy, making a noteworthy contribution to the field of secure mobile communications. The work has a considerable driving effect, encouraging further research into secure transmission schemes in mobile scenarios.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+92.00
+The paper 'A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems' presents a strong research background and addresses a crucial question in the field of blockchain technology. The paper is well-structured, with a clear theme, thorough analysis, and well-defined conclusion. The originality of the content is commendable, introducing novel solutions for merging diverse blockchain systems. The algorithms proposed are both feasible and effective, and the conclusion is reliable and valuable. However, the context provided does not offer detailed information about the specific experiments and analyses conducted, making it difficult to assess this criterion definitively. Overall, the paper makes a significant contribution to the field of blockchain integration and is recommended for acceptance.
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+88.00
+The paper presents a strong research background addressing the critical challenge of interpretability in GNN-based intrusion detection systems. It has a complete structure and a clear theme, with comprehensive analysis and a solid conclusion. The originality is notable, as it adapts GNNExplainer for a specific application in cybersecurity. Experiments demonstrate improved interpretability and stability, supporting the conclusions drawn. However, further details on practical implementations could enhance its applicability.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+85.00
+This paper effectively addresses the challenges of controlling industrial servo systems using DRL and edge computing. It has a coherent structure and presents a clear theme with well-defined analysis and conclusions. The originality of the approach is somewhat unclear without comparison to existing literature. The experiments validate the proposed algorithm's efficacy, showing significant improvements over cloud-based implementations. However, more detailed discussions on the limitations and potential future work would strengthen the paper.
+
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+90.00
+The BCPP-IAS paper presents a well-grounded research background addressing significant challenges in IoT identity authentication. It has a complete structure and clear analysis, with a strong conclusion supported by theoretical and experimental validation. The originality is evident in its novel use of blockchain technology and certificateless aggregation signature algorithm. The contributions to the thematic area are substantial, enhancing security and efficiency in IoT environments. However, further clarity on the practical implications of the proposed scheme would be beneficial.
+

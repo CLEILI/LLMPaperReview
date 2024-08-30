@@ -1,0 +1,24 @@
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+90.00
+This paper presents original and effective methodology for indoor localization, validated by extensive experiments. It addresses significant challenges in the field, achieving state-of-the-art performance metrics. However, further exploration of the algorithm's scalability could enhance its contribution to the field.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+85.00
+The paper contributes valuable solutions for enhancing physical layer security in cooperative communications, utilizing a dynamic game framework and deep reinforcement learning. While the approach shows promise, more detailed experimental results would strengthen the reliability of the conclusions drawn.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+80.00
+It introduces innovative methods for merging blockchain systems, addressing a critical need in the expanding landscape of blockchain technology. The proposed solutions show potential for improving efficiency and integration, but additional real-world case studies would enhance practical relevance.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+85.00
+This paper presents a novel DRL-SCLC control methodology for PMSM-driven servo systems in industrial IoT, effectively addressing critical aspects of performance enhancement through edge computing. While the structure is partially complete and calls for further detail in experiments, it demonstrates strong originality and relevance to the field. Performance comparisons indicate the method's practicality; however, details on adherence to high-tech standards could be improved. Overall, the conclusions are clear and impactful, confirming the study's contribution to the area.
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+80.00
+This paper advances the interpretability of GNN-based intrusion detection systems by introducing an innovative interpreter and demonstrates its effectiveness through metrics. The research underscores an important area of need in cybersecurity, particularly regarding decision-making in response to Advanced Persistent Threats. While the paper provides valuable insights, it lacks detailed methodological descriptions or high-tech standards compliance. Nonetheless, the conclusions are robust, showcasing significant contributions to improving cybersecurity practices.
+
+A Flexible Numerology Resource Allocation to Guarantee Delay and Reliability Requirements in 5G NR-V2X Networks
+90.00
+The paper proposes an innovative flexible numerology resource allocation algorithm designed for 5G NR-V2X networks, addressing key challenges in resource management for intensive vehicular communications. It provides original contributions through the analysis of resource division based on flexible numerology. The methodology employs deep reinforcement learning effectively, though experimentation details could use further elaboration. The conclusions strongly convey the algorithm's effectiveness and relevance, indicating a strong driving effect within this technology area.
+

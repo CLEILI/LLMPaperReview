@@ -1,0 +1,16 @@
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+85.00
+The paper presents a novel blockchain-based identity authentication scheme that addresses significant challenges in secure communication for IoT environments. It effectively enhances privacy protection and authentication efficiency, although more detailed experimental results would strengthen its claims.
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+90.00
+This paper introduces an innovative approach to Wi-Fi indoor localization, achieving state-of-the-art accuracy through extensive experiments. The clear analysis and proposed solutions to existing challenges make it a valuable contribution to the field, though further exploration of adaptability could enhance its impact.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+88.00
+The paper effectively develops a hierarchical game framework for enhancing physical layer security in wireless networks. Its contributions to modeling interactions among users and demonstrating superior performance through simulations are commendable, although more detailed experimental validation would be beneficial.
+
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+75.00
+The paper presents a notable approach to cooperative jamming for secure transmission in mobile scenarios. While it shows promise through simulation results, further details on the methodology and comprehensive discussions on conclusions and original contributions are needed to firmly position its impact on the field.
+

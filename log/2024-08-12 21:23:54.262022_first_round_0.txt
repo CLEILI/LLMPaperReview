@@ -1,0 +1,40 @@
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+90.00
+The paper has a strong research background and addresses an important question in industrial IoT. It has a clear theme, analysis, and conclusion. The content is original and enhances existing knowledge. The algorithm design is feasible and effective, contributing significantly to the field.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+85.00
+The paper presents a strong research background and addresses critical integration needs in blockchain systems. It has a clear theme and analysis, with original contributions that enhance knowledge in blockchain merging. The algorithm design is effective, making a notable contribution to the field.
+
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+80.00
+The paper addresses important issues in IoT identity authentication with a strong research background. It has a clear theme and original contributions that enhance knowledge in secure authentication. The algorithm design is feasible and effective, contributing positively to the field.
+
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+75.00
+The paper has a strong research background and addresses significant challenges in physical layer security. It presents a clear theme and original contributions. The algorithm design is effective, contributing to advancements in secure communication methods in mobile environments.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+70.00
+The paper presents a relevant research background and addresses important questions in physical layer security. It has a clear theme and analysis, but the originality of the content is uncertain. The algorithm design is effective, contributing to the field.
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+0.00
+
+
+A Physical Layer Approach for Securing Large-Scale Data Transmissions in Heterogeneous Wireless Networks
+85.00
+The article presents a comprehensive overview of a multi-tiered networking architecture designed for efficient wireless data transmission. It highlights the integration of emerging technologies such as non-orthogonal multiple access and massive MIMO, which enhance data transmission speeds and spectrum utilization while also introducing new security challenges, particularly eavesdropping. The author proposes various physical layer countermeasures to address these security challenges, focusing on adjusting the achievable secrecy capacity to secure wireless data. Overall, the article contributes valuable insights into the intersection of wireless technology and security, addressing both current challenges and future research directions in the field.
+
+A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm
+0.00
+
+
+A Flexible Numerology Resource Allocation to Guarantee Delay and Reliability Requirements in 5G NR-V2X Networks
+0.00
+
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+90.00
+The FEKNN approach presents a significant advancement in Wi-Fi indoor localization by enhancing the accuracy of Received Signal Strength Indicator (RSSI) data through feature enhancement and the K-Nearest Neighbor (KNN) algorithm. Experimental results demonstrate the effectiveness of FEKNN, achieving a remarkable average localization error of 1.86 meters on the public UjiIndoorLoc dataset and 0.68 meters on a custom-built dataset, indicating its applicability and reliability in practical scenarios. Overall, FEKNN showcases state-of-the-art performance in the field of indoor localization, highlighting its potential for various location-based services.
+

@@ -1,0 +1,36 @@
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+95.00
+The paper demonstrates a strong research background, clear theme, original content, high-tech standard experiments, feasible algorithm design, clear and valuable conclusion, and a significant contribution to the thematic area of intrusion detection.
+
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+85.00
+The paper has a strong research background, addresses an important question, has a complete paper structure, clear theme, and a certain contribution to the thematic area of secure cross-domain identity authentication for IoT. However, more details on experiments and analyses would further enhance the paper.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+90.00
+The paper exhibits a strong research background, complete paper structure, clear theme, original content, and a significant contribution to the thematic area of merging diverse blockchain systems. The detailed evaluation of the proposed solutions enhances the paper's value.
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+85.00
+The paper showcases a strong research background, clear theme, original content, and high-tech standard experiments. The FEKNN model contributes significantly to the thematic area of Wi-Fi indoor localization methods. Acknowledging limitations and proposing future research areas further enrich the paper.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+90.00
+The paper presents a strong research background, clear theme, feasible algorithm design, and a significant contribution to the thematic area of physical layer security in cooperative communications. The proposed hierarchical game framework and DRL-based solution demonstrate effectiveness and drive advancements in the field.
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+95.00
+The paper demonstrates a strong research background, clear theme, original content, high-tech standard experiments, feasible algorithm design, clear and valuable conclusion, and a significant contribution to the thematic area of intrusion detection.
+
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+90.00
+The paper has a strong research background and addresses an important question related to optimizing network systems for physical layer security in cooperative communications. The proposed scheme shows superiority compared to existing benchmarks.
+
+A Flexible Numerology Resource Allocation to Guarantee Delay and Reliability Requirements in 5G NR-V2X Networks
+85.00
+The paper has a strong research background and addresses an important question related to physical layer security in wireless networks. It investigates a dynamic game framework for cooperative communications.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+80.00
+The paper demonstrates a strong research background and addresses important questions related to edge-enabled mobile crowd sensing platforms. It proposes a framework to tackle challenges in mobile crowd sensing effectively.
+

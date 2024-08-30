@@ -1,0 +1,32 @@
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+76.00
+The paper presents a strong research background addressing critical challenges in IoT identity authentication, including privacy protection through innovative algorithms. Although the structure seems complete, specific details on experiments are lacking, diminishing the clarity of its contributions. Overall, it has significant implications for enhancing security in IoT but would benefit from more rigorous experimental validation.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+82.00
+This paper offers valuable insights into merging blockchain systems, introducing innovative frameworks that enhance efficiency and maintain decentralization. The structure is complete, with a clear analysis, but lacks empirical validation detail. Its contributions to interoperability in blockchain systems are evident and relevant, reflecting a strong potential for impact in the field.
+
+A Flexible Numerology Resource Allocation to Guarantee Delay and Reliability Requirements in 5G NR-V2X Networks
+80.00
+The paper effectively addresses critical delay and reliability issues in 5G NR-V2X networks through original deep learning algorithms. Its structure appears sound, and the analysis is clear; however, details on experimental methodologies might be required to fully assess its claims. It shows considerable promise in enhancing resource allocation strategies, indicating a strong contribution to the field.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+84.00
+The research presents significant contributions to physical layer security in cooperative communications, with a comprehensive framework that utilizes DRL for optimal strategies. The clarity of the conclusions is commendable, and the paper demonstrates a feasible algorithm backed by simulations. Nonetheless, specifics on experimental scenarios could bolster its reliability and application.
+
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+78.00
+This paper innovatively tackles physical layer security challenges in mobile environments, proposing strategies that account for the mobility of users. The contributions are noteworthy, focusing on cooperative jamming schemes. However, details regarding the experiments and a more thorough analysis would enrich its applicability and robustness. Nonetheless, it effectively enhances security measures in dynamic scenarios.
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+88.00
+The paper presents a novel approach to enhancing Wi-Fi indoor localization accuracy through the FEKNN methodology, validated by extensive experiments. It addresses significant challenges regarding RSS data and device variability, contributing meaningfully to the field. However, further detailed insights into the experimental methods could strengthen its impact.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+85.00
+This paper effectively proposes a deep reinforcement learning algorithm tailored for industrial servo systems, providing valuable insights into practical challenges and solutions. The robustness of the experimental validation enhances its credibility, though more extensive real-world applications could further its relevance.
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+87.00
+The paper introduces an innovative method for enhancing the interpretability of GNN-based intrusion detection systems. It presents a solid framework for understanding security decision-making processes, significantly contributing to cybersecurity. However, further explorations into practical implementations may be beneficial.
+

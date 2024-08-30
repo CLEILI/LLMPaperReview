@@ -1,0 +1,32 @@
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+78.00
+The paper presents original research in mobile secure transmission by addressing challenges posed by mobile scenarios, significantly enhancing the understanding of cooperative jamming. Advantages: Strong research background, clear theme, and effective algorithm design. Disadvantages: Incomplete structure. Overall score: 78.00
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+85.00
+The paper introduces an innovative Feature Enhancement and K-Nearest Neighbor (FEKNN) approach, achieving state-of-the-art performance in indoor localization. Advantages: Strong originality, comprehensive analysis, and clear conclusions. Disadvantages: Lacks full structure confirmation. Overall score: 85.00
+
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+80.00
+The paper significantly enhances identity authentication in IoT environments with a blockchain-based approach and efficient algorithms. Advantages: Original contributions and evident effectiveness. Disadvantages: Incomplete structural assessment. Overall score: 80.00
+
+A Flexible Numerology Resource Allocation to Guarantee Delay and Reliability Requirements in 5G NR-V2X Networks
+75.00
+The paper addresses flexible resource allocation in 5G networks with deep reinforcement learning, presenting valuable contributions. Advantages: High-level analysis and effective algorithm. Disadvantages: Limited detail on structural completeness. Overall score: 75.00
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+82.00
+The paper introduces effective solutions (HCC and HMIA) for merging blockchain systems, contributing to interoperability. Advantages: Originality and effectiveness of solutions, thorough evaluation. Disadvantages: Structural completeness not confirmed. Overall score: 82.00
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+85.00
+The paper addresses a significant question regarding the interpretability of GNN-based intrusion detection systems, which is crucial for practical adoption. It has a clear theme and presents original content that enhances existing knowledge. However, the completeness of the paper structure is uncertain, and while the algorithm design appears effective, more details on experimental results are needed to fully assess its high-tech standards.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+78.00
+This paper presents a relevant study on improving control algorithms for industrial servo systems using deep reinforcement learning. It has a clear theme and discusses innovative concepts, but the completeness of the paper structure is not fully confirmed. While it includes experimental studies, the details on high-tech standards and the clarity of the conclusions require further elaboration to enhance the overall assessment.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+90.00
+The paper investigates a dynamic game framework for physical layer security in wireless networks, addressing important questions in the field. It has a clear theme and presents original contributions that enhance the existing knowledge system. The algorithm design is validated through simulations, demonstrating its feasibility and effectiveness. However, more details on the completeness of the paper structure and the specifics of the experimental methodologies would strengthen the review.
+

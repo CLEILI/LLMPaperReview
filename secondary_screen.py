@@ -1,0 +1,77 @@
+#todo:it need a re-order code 
+from primary_screen import ReviewedPaper
+from setenvrion import chatout_dir,log_dir,workload,random_round,FinalNum
+from dealfile import conversation_log
+def secondary_screen()->list:
+    '''
+    rerank the paper with its score and get total*acceptrate out of 60%
+    '''
+    dictlist=[]#dictlist[0][name]=reviewedpaper
+    for k in range(0,random_round):
+        f=open(f"{chatout_dir}/second_round_{k}.txt","r")
+        paper={}
+        struct=[]#all struct
+        struct_1=[]#new all struct
+        lines=f.readlines()
+        size=4
+        r=0
+        for i in range(0,len(lines),size):
+            data=lines[i:i+size]
+            a=ReviewedPaper()
+            a.name=data[0][0:-1]#delete \n
+            a.name=a.name.replace(':','')#delete ":"
+            a.score=data[1][0:-1]
+            a.comment=data[2][0:-1]
+            a.rank=r
+            struct.append(a)
+            r=(r+1)%(int(workload*0.6))
+        for i in range(0,len(struct),int(workload*0.6)):
+            temp=struct[i:i+int(workload*0.6)]
+            order_temp=sorted(temp,reverse=True)
+            for j in range(0,len(order_temp)):
+                order_temp[j].rank=j#重新处理一下排序，防止agent排序出错
+                struct_1.append(order_temp[j])
+        
+        for t in struct_1:
+            if t.name not in paper:#sometime agent may write the difference info again.
+                paper[t.name]=t
+        dictlist.append(paper)
+    struct_2=[]
+    for name in dictlist[0]:#dictlist[0] is a dict like dict[name]=class
+        totalscore=0
+        totalrank=0
+        totalcomment=""
+        for i in range(0,len(dictlist)):
+            """print(dictlist[i])
+            print(name)
+            print(name in dictlist[i])
+            
+            print(dictlist[i][name].score)
+            print(type(dictlist[i][name].score)) 
+            """
+            totalscore+=float(dictlist[i][name].score)
+            totalrank+=float(dictlist[i][name].rank)
+            totalcomment=totalcomment+dictlist[i][name].comment+"|"
+        a=ReviewedPaper()
+        a.name=name
+        a.score=str(round(float(totalscore/random_round),2))
+        a.rank=str(round(float(totalrank/random_round),2))
+        a.comment=totalcomment
+        struct_2.append(a)
+    sorted_struct_2=sorted(struct_2,reverse=True)
+    with open(f"{chatout_dir}/second_round_final.txt","w+") as f:
+        for temp in sorted_struct_2:
+            f.write(temp.name)
+            f.write("\n")
+            f.write(temp.score)
+            f.write("\n")
+            f.write(temp.rank)
+            f.write("\n")
+            f.write(temp.comment)
+            f.write("\n")
+            f.write("\n")
+    pdfs=[]
+    for i in range(0,FinalNum):
+        pdfs.append(sorted_struct_2[i].name)
+    conversation_log(f"{chatout_dir}/second_round_final.txt",log_dir,"second_round_final")
+    return pdfs

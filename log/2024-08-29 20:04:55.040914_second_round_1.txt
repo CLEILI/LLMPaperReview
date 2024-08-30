@@ -1,0 +1,24 @@
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+70.00
+The paper presents a relevant approach to enhancing Physical Layer Security in mobile scenarios. However, the lack of clarity regarding its structure and conclusions limits its impact. Further elaboration on the findings and a more defined structure would strengthen its contribution.
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+85.00
+This paper offers a significant contribution to the field of intrusion detection by enhancing the interpretability of GNNs. Its clear theme and strong conclusions make it a valuable addition to the literature. However, more details on the paper's structure would be beneficial.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+80.00
+The paper effectively addresses control challenges in industrial IoT using a novel deep reinforcement learning approach. Its clear analysis and conclusions highlight its practical relevance. However, further clarification on the originality of the content would enhance its evaluation.
+
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+85.00
+The paper 'BCPP-IAS' presents an innovative blockchain-based identity authentication scheme addressing significant challenges in IoT. It demonstrates potential through theoretical and practical analyses. More detailed experimental results would enhance its credibility. Overall, it contributes significantly to the field but lacks some specified experimental depth.
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+90.00
+The paper 'FEKNN' showcases a novel approach to improve indoor localization accuracy through innovative methodology and substantial empirical validation. It effectively addresses existing challenges in Wi-Fi localization. A more comprehensive methodological discussion could further solidify its impact. Nonetheless, its contributions are clear and valuable.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+88.00
+The paper introduces an effective hierarchical game framework for enhancing physical layer security with a deep reinforcement learning approach. It successfully demonstrates the theoretical and practical benefits through simulations. While the contributions are significant, emphasizing more on real-world application scenarios could elevate its impact.
+

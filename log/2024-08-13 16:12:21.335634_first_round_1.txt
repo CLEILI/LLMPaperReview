@@ -1,0 +1,36 @@
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+85.00
+The paper has a strong research background addressing important questions related to mobile crowd sensing frameworks. It has a complete paper structure with clear themes, analysis, and conclusions. The content is original and enhances the existing knowledge system. However, more detailed experiments and analyses are needed to support the conclusions. The algorithm design's feasibility and effectiveness are not explicitly discussed. The conclusion is clear, correct, and valuable, but the reliability could be improved with more detailed information.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+80.00
+The paper demonstrates a strong research background and addresses important questions in the field of edge-enabled mobile crowd sensing platforms. It has a complete paper structure with a clear theme, analysis, and conclusion. The content is original and contributes to the existing knowledge system. However, more detailed experiments and analyses are required to support the conclusions. The feasibility and effectiveness of the algorithm design are not explicitly discussed. The conclusion is clear, correct, and valuable, but the reliability could be enhanced with additional information.
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+75.00
+The paper presents a strong research background and addresses important questions related to physical layer security-aware wireless networks. It has a complete paper structure with a clear theme, analysis, and conclusion. The content is original and enhances the existing knowledge system. However, more detailed experiments and analyses are needed to support the conclusions. The feasibility and effectiveness of the algorithm design are not explicitly discussed. The conclusion is clear, correct, and valuable, but the reliability could be improved with more detailed information.
+
+A Physical Layer Approach for Securing Large-Scale Data Transmissions in Heterogeneous Wireless Networks
+0.00
+
+
+A Flexible Numerology Resource Allocation to Guarantee Delay and Reliability Requirements in 5G NR-V2X Networks
+85.00
+The paper provides a detailed analysis and proposes a novel algorithm for resource allocation in 5G NR-V2X networks, focusing on addressing delay and reliability requirements. The use of deep reinforcement learning for distributed transmission resource selection and the analysis of flexible numerology's influence on resource allocation are significant contributions. However, further clarity in the experimental methodology and results presentation could enhance the paper's impact.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+90.00
+The paper introduces a dynamic game model integrating a matching subgame and a coalition formation subgame to simulate interactions among legitimate users, eavesdroppers, and third-party collaborative users. The proposed DRL-based solution demonstrates effectiveness in deriving optimal long-term strategies and achieving equilibrium in the hierarchical game. The simulation results highlight the superiority of the approach in enhancing physical layer security in cooperative communications.
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+0.00
+
+
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+0.00
+
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+0.00
+
+

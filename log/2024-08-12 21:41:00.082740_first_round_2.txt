@@ -1,0 +1,44 @@
+A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm
+0.00
+
+
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+85.00
+The paper presents a comprehensive exploration of leveraging blockchain technology to improve identity authentication mechanisms within the IoT landscape while ensuring privacy protection. However, it lacks a detailed analysis of the limitations and potential drawbacks of the proposed scheme. Overall, it is a significant contribution to the field with practical implications.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+88.00
+The paper introduces a novel deep reinforcement learning-based control algorithm for industrial servo systems, demonstrating its effectiveness through experimental results. However, it could benefit from a more thorough discussion on the limitations of the proposed approach and potential areas for future research. Overall, it is a valuable contribution to the field of industrial IoT control systems.
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+90.00
+The paper effectively addresses the challenges of interpretability in GNN-based intrusion detection systems, providing a novel approach that enhances understanding of decision-making processes. The evaluation metrics used demonstrate the effectiveness of the proposed method. However, further exploration of real-world applicability and limitations would strengthen the findings. Overall, it is a significant contribution to the field of cybersecurity.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+87.00
+The paper presents a dynamic game framework for physical layer security in wireless networks, showcasing a deep reinforcement learning-based solution. The simulations validate the proposed approach, but the paper could improve by discussing the practical implications and potential challenges in real-world applications. Overall, it contributes valuable insights into cooperative communication and security strategies.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+87.00
+
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+92.50
+The paper has a well-defined structure and clear theme, focusing on enhancing indoor localization accuracy through the FEKNN approach. Original research contributes to improvements in existing methods, and extensive experiments validate its effectiveness with state-of-the-art performance. However, addressing challenges related to symmetry in data remains a concern.
+
+A Physical Layer Approach for Securing Large-Scale Data Transmissions in Heterogeneous Wireless Networks
+0.00
+
+
+A Flexible Numerology Resource Allocation to Guarantee Delay and Reliability Requirements in 5G NR-V2X Networks
+88.00
+The paper presents a significant contribution to the field of NR-V2X networks by analyzing resource allocation through flexible numerology, proposing a novel deep learning-based algorithm that improves spectrum utilization and meets communication requirements effectively. The clear structure and thorough experiments support the findings, demonstrating its effectiveness.
+
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+84.50
+This paper addresses mobility challenges in wireless communications through a novel cooperative jamming scheme. The clear extraction of performance metrics and the innovative approach improve security, indicating both feasibility and potential effectiveness. It drives further research in Physical Layer Security by providing valuable insights.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+90.00
+The proposed merging frameworks, HCC and HMIA, address critical challenges of integrating heterogeneous and homogeneous blockchain systems, significantly enhancing scalability and interoperability. The paper effectively outlines clear contributions and demonstrates the feasibility and negligible performance impact of the proposed solutions.
+

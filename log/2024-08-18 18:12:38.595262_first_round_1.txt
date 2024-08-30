@@ -1,0 +1,32 @@
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+92.00
+This paper presents a strong research background and addresses an important question regarding Wi-Fi indoor localization. It has a structured format and a clear theme, with extensive experiments validating its innovative approach. The conclusion is clear and valuable, highlighting significant improvements in localization accuracy. However, more details on experimental design could enhance the review. Overall, it contributes original content to the field, achieving state-of-the-art performance.
+
+A Flexible Numerology Resource Allocation to Guarantee Delay and Reliability Requirements in 5G NR-V2X Networks
+85.00
+The paper addresses critical issues in 5G NR-V2X networks, proposing a flexible numerology resource allocation algorithm based on deep learning. It has a clear theme and conducts relevant analyses, but lacks detailed descriptions of experimental methodologies. The conclusion is not fully confirmed, but the contributions to resource allocation are significant. Further research is needed to enhance stability and robustness.
+
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+88.00
+This paper effectively addresses the challenges of identity authentication in IoT environments, presenting a novel blockchain-based scheme that enhances efficiency and security. It has a complete structure and a clear theme, but lacks specific details on experimental methodologies. The contributions are significant, driving advancements in secure communication and identity authentication.
+
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+80.00
+The paper contributes to Physical Layer Security by proposing a cooperative jamming scheme for mobile scenarios. It presents a clear theme and demonstrates the feasibility of the proposed algorithm through simulations. However, the details on experimental design and analysis are limited. The contributions are relevant and could drive further research in secure communications.
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+90.00
+This paper enhances the interpretability of GNN-based intrusion detection systems, addressing a significant gap in cybersecurity. It presents a clear theme and demonstrates the effectiveness of the proposed methodology. The contributions are valuable, improving responses to security threats. However, more details on experimental methodologies would strengthen the review.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+85.00
+This paper presents a novel deep reinforcement learning-based control algorithm (DRL-SCLC) for industrial servo systems, addressing key challenges in control design and enhancing performance in industrial IoT applications. The conclusions drawn emphasize the algorithm's effectiveness in reducing position tracking errors and improving control reliability. However, the paper lacks some details regarding the completeness of its structure and the depth of its experimental analysis.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+80.00
+The paper introduces two solutions for merging diverse blockchain systems, which are relevant in the expanding landscape of blockchain technology. It effectively addresses the challenges of integration and enhances efficiency and scalability. However, the originality of the content and the depth of experimental validation could be further clarified to strengthen its contribution to the field.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+88.00
+This paper proposes a hierarchical game framework that models interactions in wireless networks, demonstrating the effectiveness of a deep reinforcement learning-based solution. The conclusions are clear and emphasize the contributions to physical layer security. The paper shows a strong contribution to the thematic area, but further details on the experimental setup and results would enhance its reliability.
+

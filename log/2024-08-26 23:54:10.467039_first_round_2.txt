@@ -1,0 +1,32 @@
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+85.00
+The paper presents a novel interpretation methodology for Provenance-based Intrusion Detection Systems (PIDS) using the GNNExplainer framework. It effectively addresses the significant barrier of interpretability in GNN-based systems, facilitating improved response to security threats. However, the structure could be enhanced with clearer methodological details.
+
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+80.00
+This paper addresses key issues in IoT identity authentication with a novel blockchain-based approach that enhances security, efficiency, and privacy. It presents a sound structure but lacks detailed experimental results, which would further validate the proposed solutions.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+82.00
+The research offers a robust hierarchical game framework for enhancing physical layer security in wireless networks through deep reinforcement learning. The clarity of the theme and results is commendable, but more detailed experimental validations would strengthen its contributions.
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+90.00
+This paper makes significant advancements in Wi-Fi indoor localization through the innovative FEKNN method, demonstrated by extensive experiments. The clarity of the methodology and results is impressive; however, more discussion on the algorithm's adaptability could benefit the findings.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+78.00
+It presents important contributions for merging diverse blockchain systems with proposed solutions that improve efficiency and interoperability. The evaluation of these approaches is informative, but the lack of detailed experimental validation limits the review's robustness.
+
+A Flexible Numerology Resource Allocation to Guarantee Delay and Reliability Requirements in 5G NR-V2X Networks
+85.00
+The paper presents a groundbreaking approach to flexible numerology resource allocation in V2X networks using deep learning, effectively addressing existing challenges in delay and reliability. However, the paper lacks clarity regarding its complete structure and detailed experimental methodologies, which slightly affects the overall assessment.
+
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+80.00
+This research advances the field of Physical Layer Security in mobile communications by presenting a cooperative jamming strategy that effectively mitigates secrecy loss during handoffs. However, the paper could benefit from more explicit details on methodologies and results in practical implementations.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+88.00
+The paper demonstrates significant advancements in industrial IoT control systems by proposing an effective deep reinforcement learning algorithm that minimizes tracking errors. It presents robust experimental evidence, although more insights into certain technical aspects could enhance its contribution further.
+

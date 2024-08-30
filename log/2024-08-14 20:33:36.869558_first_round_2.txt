@@ -1,0 +1,32 @@
+A Flexible Numerology Resource Allocation to Guarantee Delay and Reliability Requirements in 5G NR-V2X Networks
+85.00
+The paper presents a strong research background and addresses an important question in 5G NR-V2X networks. It proposes a novel flexible numerology resource allocation algorithm, enhancing the existing knowledge system. However, the paper lacks a complete structure and detailed experimental analysis. The algorithm is feasible and effective, with a clear and valuable conclusion. Overall, it contributes significantly to the field, but more detailed experiments would strengthen the findings.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+90.00
+The paper has a strong research background and addresses a critical question in industrial IoT. It presents a complete structure with a clear theme and valuable conclusion. The proposed DRL-SCLC algorithm is original, feasible, and effective, enhancing the existing knowledge system. The experiments are well-conducted, supporting the conclusions. The paper makes a significant contribution to the field, with minor improvements needed in experimental detail.
+
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+92.00
+The paper addresses an important question in cybersecurity with a strong research background. It has a complete structure and presents a clear theme and valuable conclusion. The content is original, and the proposed method is feasible and effective. The experiments are well-conducted, supporting the conclusions. The paper makes a significant contribution to the field, enhancing the interpretability of GNN-based intrusion detection systems.
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+88.00
+The paper addresses a significant question in Wi-Fi indoor localization with a strong research background. It presents a clear theme and valuable conclusion, with original content that enhances the existing knowledge system. The proposed FEKNN algorithm is feasible and effective. However, the paper lacks detailed experimental analysis. Overall, it contributes significantly to the field, with potential for further improvement in experimental detail.
+
+An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario
+87.00
+The paper addresses an important question in secure transmission for mobile scenarios with a strong research background. It presents a clear theme and valuable conclusion, with original content that enhances the existing knowledge system. The proposed scheme is feasible and effective, with significant contributions to the field. However, the paper lacks detailed experimental analysis. Overall, it is a valuable contribution with room for improvement in experimental detail.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+92.00
+This paper presents a strong research background and addresses an important question in the field of physical layer security. It has a complete structure and a clear theme, analysis, and conclusion. The originality of the content enhances the existing knowledge system, and the algorithm design is feasible and effective. However, the details of experiments and analyses are not fully clear. The paper makes a significant contribution to the thematic area.
+
+BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection
+89.00
+The paper addresses critical issues in IoT security with a novel blockchain-based approach. It has a complete structure and a clear theme, analysis, and conclusion. The originality and feasibility of the algorithm are commendable. However, the conclusion's clarity and reliability could not be fully assessed. The paper contributes significantly to the field of IoT identity authentication.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+90.00
+This paper tackles the important challenge of merging blockchain systems. It has a complete structure and a clear theme, analysis, and conclusion. The originality and feasibility of the proposed solutions are notable. However, the details of experiments and analyses are not fully clear. The paper makes a significant contribution to blockchain technology.
+

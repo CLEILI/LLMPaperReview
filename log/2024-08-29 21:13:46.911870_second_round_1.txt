@@ -1,0 +1,24 @@
+An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer
+75.00
+The paper addresses an important challenge in GNN-based Intrusion Detection Systems by enhancing interpretability. While the research background is strong, the lack of detailed experimental descriptions limits the overall evaluation. The algorithm's effectiveness is affirmed, yet clarity on structure and originality could improve its impact.
+
+A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
+80.00
+This study proposes a novel algorithm for control in industrial settings, utilizing deep reinforcement learning effectively. The analysis is comprehensive, but a few structural details are missing. Overall, it shows promise in addressing real-world applications, though further depth in experiments would enhance the submission.
+
+A Flexible Numerology Resource Allocation to Guarantee Delay and Reliability Requirements in 5G NR-V2X Networks
+85.00
+The paper introduces innovative solutions for resource allocation within V2X networks and demonstrates effective algorithms for improving performance metrics. However, more elaboration on experimental results and validation processes is needed. Overall, it provides substantial contributions to the field, addressing timely challenges in 5G communication.
+
+FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN
+88.00
+This paper introduces a novel approach (FEKNN) to enhance Wi-Fi indoor localization accuracy, handling RSSI issues effectively. Experimental results validate its claims, achieving state-of-the-art performance. However, further exploration of symmetry challenges could enhance future work.
+
+A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications
+85.00
+The paper presents an effective DRL-based hierarchical game framework for improving physical layer security in cooperative wireless networks. The simulation results validate its superior performance, affirming its contribution to network security knowledge. Additional detail on practical implementations could further enhance its impact.
+
+A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems
+81.00
+The paper offers valuable solutions for blockchain integration with HCC and HMIA, addressing significant interoperability needs. While it presents thorough analyses, the novelty and adaptability of the proposed frameworks in various contexts could be further elaborated to enhance their contribution to the field.
+
