@@ -12,17 +12,20 @@ image_dir="./images"
 xls_dir="./xls"
 workload=5#num of reviewing paper per agent
 random_round=3#num of repeat rounds for reviewing a group of papers
-ModelName="gpt-4o-mini"
+ModelName="qwen2-72b-instruct"
 
 closeModel=["gpt-4o-2024-08-06","gpt-4o-mini","gpt-3.5-turbo",
             "gpt-4o","gpt-4o-mini-2024-07-18",]
 ollamamodel=["llama3.1:8b",]
 
 glmmodel=["GLM-4-Plus","GLM-4-Flash","GLM-4-AllTools"]
-tongyimodel=[]
+dashmodel=["qwen2-72b-instruct","llama3.1-405b-instruct"]
 
 glmurl="https://open.bigmodel.cn/api/paas/v4"
-glmkey="3c2b712fc2f9af2ba23e535db9e23ca5.euNNHTo6PeoZm29V"
+glmkey="3c2b712fc2f9af2ba23e535db9e23ca5.euNNHTo6PeoZm29V"#cant run,NoneType
+
+os.environ["DASHSCOPE_API_KEY"]="sk-b3b1fb112de74a3db97b8ec467567c3c"
+dashurl="https://dashscope.aliyuncs.com/compatible-mode/v1"#isok
 
 layout_config={
     #"request_timeout": 180,
@@ -105,7 +108,21 @@ def get_llm_config()->dict:
         "api_key": glmkey,
     },
     ]
-
+    config["qwen2-72b-instruct"]=[
+    {
+        "model": "qwen2-72b-instruct",
+        "base_url": dashurl,
+        "api_key": os.environ["DASHSCOPE_API_KEY"],
+    },
+    ]
+    
+    config["meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo"]=[
+    {
+        "model": "meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo",
+        "base_url": "https://api.aimlapi.com/v1",
+        "api_key": "97891b4aa9044f8eb4ce07127d85c5bd",
+    },
+    ]
     llm_config = {
         "timeout": 120,
         "seed": 42,
