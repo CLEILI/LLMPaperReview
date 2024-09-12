@@ -1,6 +1,6 @@
 from autogen import UserProxyAgent,AssistantAgent,GroupChat,GroupChatManager,register_function,ConversableAgent
-from setenvrion import get_llm_config,chatout_dir
-from get_rag import get_all_rag
+from setenvrion import get_llm_config,chatout_dir,workload
+from get_rag_1 import get_all_rag
 import sys,re,json
 from typing import Callable
 def regis_func(
@@ -129,12 +129,14 @@ At last, chiefeditor just need to reply all papers' information in the follwing 
     
     pattern = r'\{.*?"comment".*?"papername".*?"score".*?\}'
     matches = re.findall(pattern, s)
+    if len(matches)!=len(pdf):
+        return False
 
     for element in matches:
         pdfdic=json.loads(element)
         writeinfo(pdfdic['papername'].replace(':',''),pdfdic['score'],pdfdic['comment'].replace('\n',''))
 
-    return a
+    return True
 
 
 def testfunc():

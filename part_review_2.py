@@ -4,7 +4,7 @@ import sys
 from setenvrion import get_llm_config,template_dir,image_dir,chatout_dir,layout_config,googleSearchKey,workload
 from serpapi import GoogleSearch
 from autogen.agentchat.contrib.multimodal_conversable_agent import MultimodalConversableAgent
-from get_rag import get_all_rag
+from get_rag_1 import get_all_rag
 def check_layout(pdfname:str)->str:
     '''
     Filter out papers that do not meet the standard template
@@ -165,17 +165,19 @@ def review(pdf:list,retrieval_function):
     if flag==0:
         pattern = r'\{.*?"comment".*?"papername".*?"score".*?\}'
         matches = re.findall(pattern, s)
-
+        if len(matches)!=len(pdf):
+            return False
         for element in matches:
             pdfdic=json.loads(element)
             writeinfo(pdfdic['papername'].replace(':',''),pdfdic['score'],pdfdic['comment'].replace('\n',''))
     if flag==1:
         pattern=r"Paper:\s*(.*?)\*\*\s*- Comment:\s*(.*?)\s*- Score:\s*(\d+\.\d+)"
         paper_sections = re.findall(pattern, s)
-        
+        if len(paper_sections)!=len(pdf):
+            return False
         for element in paper_sections:
             writeinfo(element[0].replace(':',''),element[2],element[1].replace('\n',''))
-    return a
+    return True
 
 def testfunc():
     get_llm_config()

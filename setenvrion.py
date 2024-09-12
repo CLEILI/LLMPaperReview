@@ -6,7 +6,7 @@ AcceptRate=0.4#114/290,for the acceptrate,we design strategy like 5->3->2
 chatout_dir="./txt"
 log_dir="./log"
 execute_log="./executelog"
-pdf_dir="./pdfs1"
+pdf_dir="./paper_pdfs"
 template_dir="./layout_template"
 image_dir="./images"
 xls_dir="./xls"
@@ -16,6 +16,14 @@ ModelName="gpt-4o-mini"
 
 closeModel=["gpt-4o-2024-08-06","gpt-4o-mini","gpt-3.5-turbo",
             "gpt-4o","gpt-4o-mini-2024-07-18",]
+ollamamodel=["llama3.1:8b",]
+
+glmmodel=["GLM-4-Plus","GLM-4-Flash","GLM-4-AllTools"]
+tongyimodel=[]
+
+glmurl="https://open.bigmodel.cn/api/paas/v4"
+glmkey="3c2b712fc2f9af2ba23e535db9e23ca5.euNNHTo6PeoZm29V"
+
 layout_config={
     #"request_timeout": 180,
     "seed": 42,
@@ -35,7 +43,7 @@ def get_llm_config()->dict:
     set the temporary LLM variable environment
     '''
     
-    os.environ["OPENAI_API_KEY"]="sk-xADQYFF4GtkR8FpA30E97684D7D34574BeF61c91833a1025"
+    os.environ["OPENAI_API_KEY"]="sk-88cKKnjijXIVqgAFE48c5b0775E9472d8c09111c4a5e8080"
     os.environ["OPENAI_API_BASE"] = "https://api.tata-api.com/v1"
     
     config={}
@@ -90,6 +98,14 @@ def get_llm_config()->dict:
         "api_type":"anthropic",
     },
     ]
+    config["GLM-4-Plus"]=[
+    {
+        "model": "GLM-4-Plus",
+        "base_url": glmurl,
+        "api_key": glmkey,
+    },
+    ]
+
     llm_config = {
         "timeout": 120,
         "seed": 42,
@@ -111,6 +127,6 @@ def ComputeNum():
 
 
 TotalNum=ComputeNum()
-FirstNum=int(TotalNum*0.6)
+FirstNum=int(TotalNum*0.6)#290*0.6
 FinalNum=math.ceil(TotalNum*AcceptRate)
 # the wrong layout papers' propotion should not be more than 40%

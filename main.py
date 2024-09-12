@@ -1,4 +1,4 @@
-from get_rag import get_all_rag
+from get_rag_1 import get_all_rag
 #from get_ag_rag import get_all_rag_1
 from part_review_2 import review,check_layout
 from setenvrion import get_llm_config,chatout_dir,log_dir,pdf_dir,workload,random_round
@@ -31,10 +31,11 @@ def reviewallpaper():
     
     for i in range(len(pdfs) - 1, -1, -1):
         if check_layout(pdfs[i])=="NO":
+            print(f"{pdfs[i]} layout wrong")
             pdfs.remove(pdfs[i])#The num of wrong layout should be less that 40%
+        print(f"{i} check down")
 
-    #TODO:check layout here and select that pdfs
-
+    write_log(pdfs)
     retrieval_function=get_all_rag(pdfs)
 
     #TODO:add a function to deal with papers less than 5
@@ -44,8 +45,10 @@ def reviewallpaper():
 
         for i in range(0,len(pdfs),workload):#loop workload 
             pdf=pdfs[i:i+workload]
-            review(pdf,retrieval_function)
-            print(f"{MAGENTA}First round {j} times {i}-{i+workload} papers down{RESET}")
+            tag=False
+            while not tag:
+                tag=review(pdf,retrieval_function)#to prevent gpt just pre return {"comment" and get less paper outcome
+            print(f"{MAGENTA}First round {j} times {i}-{i+len(pdf)} papers down{RESET}")
 
         copy_file(chatout_dir+"/chatout1",chatout_dir+f"/chatout1_{j}")
         conversation_log(chatout_dir+"/chatout1",log_dir,f"chatout1_{j}")
@@ -59,14 +62,17 @@ def reviewallpaper():
 
     first_round_pdfs=primary_screen()
     print(first_round_pdfs)
+    print(len(first_round_pdfs))
 
     for j in range(0,random_round):
         write_log(first_round_pdfs)
 
         for i in range(0,len(first_round_pdfs),int(workload*0.6)):
             pdf=first_round_pdfs[i:i+int(workload*0.6)]
-            group_chat(pdf,retrieval_function)
-            print(f"{MAGENTA}Second round {j} times {i}-{i+int(workload*0.6)} papers down{RESET}")
+            tag=False
+            while not tag:
+                tag=group_chat(pdf,retrieval_function)
+            print(f"{MAGENTA}Second round {j} times {i}-{i+len(pdf)} papers down{RESET}")
 
         copy_file(chatout_dir+"/chatout2",chatout_dir+f"/chatout2_{j}")
         conversation_log(chatout_dir+"/chatout2",log_dir,f"chatout2_{j}")
@@ -97,7 +103,7 @@ def recover_from_log(pdfs:str,successround:int):
 
 
     get_llm_config()
-    retrieval_function=get_all_rag(pdfs)
+    
 
     round=int(successround/random_round)
     recoverbegin=successround%random_round
@@ -122,20 +128,30 @@ def recover_from_log(pdfs:str,successround:int):
 
     
     needreviewed=list(set(pdfs).difference(set(reviewedpdfs)))
-
+    print(f"recover begin {round+1}_{recoverbegin}")
+    if successround==5:
+        retrieval_function=get_all_rag(needreviewed)
+    elif successround==6:
+        print("Dont need embeding")
+    else:
+        retrieval_function=get_all_rag(pdfs)
 
     for j in range(firstbegin,firstend):
         write_log(pdfs)
         if round==0 and j==firstbegin:
             for i in range(0,len(needreviewed),workload):#loop workload 
                 pdf=needreviewed[i:i+workload]
-                review(pdf,retrieval_function)
-                print(f"{RED}First round {j} times {i}-{i+workload} papers down{RESET}")
+                tag=False
+                while not tag:
+                    tag=review(pdf,retrieval_function)
+                print(f"{RED}First round {j} times {i+len(reviewedpdfs)}-{i+len(pdf)+len(reviewedpdfs)} papers down{RESET}")
         else:
             for i in range(0,len(pdfs),workload):#loop workload 
                 pdf=pdfs[i:i+workload]
-                review(pdf,retrieval_function)
-                print(f"{RED}First round {j} times {i}-{i+workload} papers down{RESET}")
+                tag=False
+                while not tag:
+                    tag=review(pdf,retrieval_function)
+                print(f"{RED}First round {j} times {i}-{i+len(pdf)} papers down{RESET}")
         copy_file(chatout_dir+"/chatout1",chatout_dir+f"/chatout1_{j}")
         conversation_log(chatout_dir+"/chatout1",log_dir,f"chatout1_{j}")
         copy_file(chatout_dir+"/first_round.txt",chatout_dir+f"/first_round_{j}.txt")
@@ -149,19 +165,24 @@ def recover_from_log(pdfs:str,successround:int):
     first_round_pdfs=primary_screen()
     #first_round_pdfs=pdfs
     print(first_round_pdfs)
-
+    print(f"length of first round pdfs is {len(first_round_pdfs)}")
+    write_log(first_round_pdfs)
     for j in range(secondbegin,secondend):
         write_log(first_round_pdfs)
         if round==1 and j==secondbegin:
             for i in range(0,len(needreviewed),int(workload*0.6)):#loop workload 
                 pdf=needreviewed[i:i+int(workload*0.6)]
-                group_chat(pdf,retrieval_function)
-                print(f"{RED}Second round {j} times {i}-{i+int(workload*0.6)} papers down{RESET}")
+                tag=False
+                while not tag:
+                    tag=group_chat(pdf,retrieval_function)
+                print(f"{RED}Second round {j} times {i+len(reviewedpdfs)}-{i+len(pdf)+len(reviewedpdfs)} papers down{RESET}")
         else:
             for i in range(0,len(first_round_pdfs),int(workload*0.6)):
                 pdf=first_round_pdfs[i:i+int(workload*0.6)]
-                group_chat(pdf,retrieval_function)
-                print(f"{RED}Second round {j} times {i}-{i+int(workload*0.6)} papers down{RESET}")
+                tag=False
+                while not tag:
+                    tag=group_chat(pdf,retrieval_function)
+                print(f"{RED}Second round {j} times {i}-{i+len(pdf)} papers down{RESET}")
         copy_file(chatout_dir+"/chatout2",chatout_dir+f"/chatout2_{j}")
         conversation_log(chatout_dir+"/chatout2",log_dir,f"chatout2_{j}")
         copy_file(chatout_dir+"/second_round.txt",chatout_dir+f"/second_round_{j}.txt")

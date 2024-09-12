@@ -2,6 +2,7 @@
 from primary_screen import ReviewedPaper
 from setenvrion import chatout_dir,log_dir,workload,random_round,FinalNum
 from dealfile import conversation_log
+import os
 def secondary_screen()->list:
     '''
     rerank the paper with its score and get total*acceptrate out of 60%
@@ -36,8 +37,14 @@ def secondary_screen()->list:
             if t.name not in paper:#sometime agent may write the difference info again.
                 paper[t.name]=t
         dictlist.append(paper)
+        print(f"{k} lenth is {len(paper)}")
     struct_2=[]
-    for name in dictlist[0]:#dictlist[0] is a dict like dict[name]=class
+    maxi=0
+    maxlen=len(dictlist[0])
+    for i in range(0,len(dictlist)):
+        if len(dictlist[i])>maxlen:
+            maxi=i
+    for name in dictlist[maxi]:#dictlist[0] is a dict like dict[name]=class
         totalscore=0
         totalrank=0
         totalcomment=""
@@ -49,27 +56,37 @@ def secondary_screen()->list:
             print(dictlist[i][name].score)
             print(type(dictlist[i][name].score)) 
             """
-            totalscore+=float(dictlist[i][name].score)
-            totalrank+=float(dictlist[i][name].rank)
-            totalcomment=totalcomment+dictlist[i][name].comment+"|"
+            if name in dictlist[i]:
+                totalscore+=float(dictlist[i][name].score)
+                totalrank+=float(dictlist[i][name].rank)
+                totalcomment=totalcomment+dictlist[i][name].comment+"|"
+            else:
+                totalscore+=float(dictlist[maxi][name].score)
+                totalrank+=float(dictlist[maxi][name].rank)
+                totalcomment=totalcomment+dictlist[maxi][name].comment+"|"
         a=ReviewedPaper()
         a.name=name
         a.score=str(round(float(totalscore/random_round),2))
         a.rank=str(round(float(totalrank/random_round),2))
         a.comment=totalcomment
-        struct_2.append(a)
+
+        if not any(ele.name==a.name for ele in struct_2):
+            struct_2.append(a)
+    print(f"final lenth {len(struct_2)}")
     sorted_struct_2=sorted(struct_2,reverse=True)
-    with open(f"{chatout_dir}/second_round_final.txt","w+") as f:
-        for temp in sorted_struct_2:
-            f.write(temp.name)
-            f.write("\n")
-            f.write(temp.score)
-            f.write("\n")
-            f.write(temp.rank)
-            f.write("\n")
-            f.write(temp.comment)
-            f.write("\n")
-            f.write("\n")
+
+    if os.path.getsize(f"{chatout_dir}/second_round_final.txt")==0:
+        with open(f"{chatout_dir}/second_round_final.txt","w+") as f:
+            for temp in sorted_struct_2:
+                f.write(temp.name)
+                f.write("\n")
+                f.write(temp.score)
+                f.write("\n")
+                f.write(temp.rank)
+                f.write("\n")
+                f.write(temp.comment)
+                f.write("\n")
+                f.write("\n")
     pdfs=[]
     for i in range(0,FinalNum):
         pdfs.append(sorted_struct_2[i].name)
