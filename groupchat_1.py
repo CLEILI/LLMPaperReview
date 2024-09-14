@@ -36,26 +36,26 @@ def group_chat(pdf:list,retrieval_function):
         human_input_mode="NEVER",
         #system_message="""Reply TERMINATE if the task has been solved at full satisfaction.
         #Otherwise, reply CONTINUE, or the reason why the task is not solved yet.""",
-        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]),
+        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "Paper:" in str(msg["content"]),
     )
     chiefeditor=AssistantAgent(
         name="chiefeditor",
         llm_config=llm_config,
-        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]),
+        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "Paper:" in str(msg["content"]),
         system_message="You are a journal chiefeditor, as the Editor-in-Chief, you are joining the final round table discussion to review and finalize the publication's upcoming issue. Your responsibilities include leading the discussion, providing decisive input on the content lineup, and ensuring that all papers meet the publication's standards of quality and relevance. You will evaluate each piece for its contribution to the overall theme, make recommendations for last-minute edits, and address any concerns raised by the editorial team. Your goal is to ensure a cohesive and compelling issue that upholds the publication's voice and vision. Additionally, you are supposed to decide the scores and comments for each paper based on the discussion process",
         description="a journal chiefeditor who participate in the final review of paper",
     )
     subeditor=AssistantAgent(
         name="subeditor",
         llm_config=llm_config,
-        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]),
+        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "Paper:" in str(msg["content"]),
         system_message="You are a journal subeditor, as the Subeditor, you are joining the final round table discussion to contribute to the review and finalization of the publication's upcoming issue. Your role involves providing detailed feedback on the papers, ensuring grammatical accuracy, factual correctness, and adherence to the publication's style guide. You will collaborate with the Editor-in-Chief and other editorial team members to make any necessary last-minute edits and improvements. Your keen eye for detail and commitment to quality will help ensure that the final content is polished, engaging, and ready for publication.",
         description="a journal subeditor who participate in the final review of paper",
     )
     professor=AssistantAgent(
         name="expert",
         llm_config=llm_config,
-        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]),
+        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "Paper:" in str(msg["content"]),
         system_message="You are a journal expert, as a expert, you are joining the final round table discussion to provide expert insights and academic perspectives on the topics being covered in the publication's upcoming issue. Your role involves critically evaluating the depth and accuracy of the content, ensuring that it meets high academic and intellectual standards. You will offer constructive feedback, suggest improvements, and help refine complex ideas to make them accessible to a broader audience. Your expertise will be invaluable in enhancing the quality and credibility of the publication, ensuring it delivers well-researched and thought-provoking content.",
         description="a journal expert who participate in the final review of paper"
     )
@@ -122,25 +122,43 @@ At last, chiefeditor just need to reply all papers' information in the follwing 
     sys.stdout=sys.__stdout__
 
     s=""
-    for i in range(-1,-8,-1):
+    flag=0
+    for i in range(-1,-5,-1):
         if "{\"comment\":" in a.chat_history[i]['content']:
             s=a.chat_history[i]['content']
+            flag=0
             break
-    
-    pattern = r'\{.*?"comment".*?"papername".*?"score".*?\}'
-    matches = re.findall(pattern, s)
-    if len(matches)!=len(pdf):
-        return False
-
-    for element in matches:
-        pdfdic=json.loads(element)
-        writeinfo(pdfdic['papername'].replace(':',''),pdfdic['score'],pdfdic['comment'].replace('\n',''))
-
+        if "Paper:" in a.chat_history[i]['content']:
+            s=a.chat_history[i]['content']
+            flag=1#3.5turbo
+            break
+    if flag==0:
+        pattern = r'\{.*?"comment".*?"papername".*?"score".*?\}'
+        matches = re.findall(pattern, s)
+        if len(matches)!=len(pdf):
+            return False
+        for element in matches:
+            pdfdic=json.loads(element)
+            writeinfo(pdfdic['papername'].replace(':',''),pdfdic['score'],pdfdic['comment'].replace('\n',''))
+    if flag==1:
+        pattern=r'\**?Paper: (.*?)\n\s*-+ ?\**?Comments?\**?:\**? (.*?)\n\s*-+ ?\**?Score\**?:\**? ([0-9.]+)'
+        pattern1=r'\**?Paper: (.*?)\n\s*-+ ?\**?Score\**?:\**? ([0-9.]+)\n\s*-+ ?\**?Comments?\**?:\**? (.*?)\n'
+        paper_sections = re.findall(pattern, s)
+        paper_sections1 = re.findall(pattern1, s)
+        if len(paper_sections)!=len(pdf):
+            if len(paper_sections1)!=len(pdf):
+                return False
+        if len(paper_sections)==len(pdf):
+            for element in paper_sections:
+                writeinfo(element[0].replace(':',''),element[2],element[1].replace('\n',''))
+        else:
+            for element in paper_sections1:
+                writeinfo(element[0].replace(':',''),element[1],element[2].replace('\n',''))        
     return True
 
 
 def testfunc():
-    pdfs=["A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm",
+    pdfs=[#"A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm",
          "A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems",
          "An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario",
          ]
@@ -148,4 +166,4 @@ def testfunc():
     function=get_all_rag(pdfs)
     group_chat(pdfs,function)
 
-#testfunc()#4o model problem
+testfunc()#4o model problem

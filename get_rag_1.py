@@ -4,6 +4,7 @@ from langchain_community.vectorstores.chroma import Chroma
 from langchain_community.llms.ollama import Ollama
 from langchain_community.chat_models.ollama import ChatOllama
 from langchain_community.chat_models.zhipuai import ChatZhipuAI
+from langchain_community.chat_models.tongyi import ChatTongyi
 from langchain_openai import OpenAIEmbeddings
 from langchain.chains import ConversationalRetrievalChain
 #from langchain.chains.conversational_retrieval.base
@@ -18,7 +19,7 @@ from langchain.memory import ConversationBufferMemory,ConversationSummaryMemory
 #from langchain_community.document_loaders.pdf
 #from langchain.chains.retrieval_qa.base
 import os
-from setenvrion import pdf_dir,ModelName,closeModel,get_llm_config,ollamamodel,glmmodel,glmkey
+from setenvrion import pdf_dir,ModelName,closeModel,get_llm_config,ollamamodel,glmmodel,dashmodel,glmkey,glmurl,dashurl
 
 
 def get_all_rag(allpdf:list):
@@ -53,10 +54,22 @@ def get_all_rag(allpdf:list):
         if ModelName in ollamamodel:
             llm=ChatOllama(model=ModelName)
         elif ModelName in glmmodel:
-            llm=ChatZhipuAI(
-                temperature=0.1,
-                api_key=glmkey,
-                model=ModelName,
+            llm=ChatZhipuAI(temperature=0.1,
+                            api_key=glmkey,
+                            model=ModelName,
+                            base_url=glmurl,
+                            )
+        elif ModelName in dashmodel:
+            llm=ChatOpenAI(model=ModelName,
+                           base_url=dashurl,
+                           api_key=os.environ["DASHSCOPE_API_KEY"],
+                           temperature=0,
+                           )
+        elif ModelName=="meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo":
+            llm=ChatOpenAI(model=ModelName,
+                base_url="https://api.aimlapi.com/v1",
+                temperature=0,
+                api_key="97891b4aa9044f8eb4ce07127d85c5bd",
                 )
         elif ModelName in closeModel:
             llm=ChatOpenAI(model=ModelName,
@@ -92,12 +105,12 @@ def get_all_rag(allpdf:list):
 
 def testfunc():
     get_llm_config()
-    pdf=["A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm",
+    pdf=[#"A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm",
          "A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems",
-         "An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario",
+         #"An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario",
          "FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN",
-         "BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection",
-         "A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications",
+         #"BCPP-IAS Blockchain-Based Cross-Domain Identity Authentication Scheme for IoT with Privacy Protection",
+         #"A DRL-Based Hierarchical Game for Physical Layer Security Aware Cooperative Communications",
          ]
     qafunc=get_all_rag(pdf)
     for p in pdf:

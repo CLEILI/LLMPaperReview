@@ -89,7 +89,7 @@ def review(pdf:list,retrieval_function):
         #system_message="""Reply TERMINATE if the task has been solved at full satisfaction.
         #Otherwise, reply CONTINUE, or the reason why the task is not solved yet.""",
         #function_map={f"answer_{i}": retrieval_functions[pdf[i]] for i in range(len(pdf))}
-        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]),
+        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "Paper:" in str(msg["content"]),
     )
     #for i in range(len(pdf)):
     register_function(
@@ -158,7 +158,7 @@ def review(pdf:list,retrieval_function):
             s=a.chat_history[i]['content']
             flag=0
             break
-        if "**Paper:" in a.chat_history[i]['content']:
+        if "Paper:" in a.chat_history[i]['content']:
             s=a.chat_history[i]['content']
             flag=1#3.5turbo
             break
@@ -171,19 +171,26 @@ def review(pdf:list,retrieval_function):
             pdfdic=json.loads(element)
             writeinfo(pdfdic['papername'].replace(':',''),pdfdic['score'],pdfdic['comment'].replace('\n',''))
     if flag==1:
-        pattern=r"Paper:\s*(.*?)\*\*\s*- Comment:\s*(.*?)\s*- Score:\s*(\d+\.\d+)"
+        pattern=r'\**?Paper: (.*?)\n\s*-+ ?\**?Comments?\**?:\**? (.*?)\n\s*-+ ?\**?Score\**?:\**? ([0-9.]+)'
+        pattern1=r'\**?Paper: (.*?)\n\s*-+ ?\**?Score\**?:\**? ([0-9.]+)\n\s*-+ ?\**?Comments?\**?:\**? (.*?)\n'
         paper_sections = re.findall(pattern, s)
+        paper_sections1 = re.findall(pattern1, s)
         if len(paper_sections)!=len(pdf):
-            return False
-        for element in paper_sections:
-            writeinfo(element[0].replace(':',''),element[2],element[1].replace('\n',''))
+            if len(paper_sections1)!=len(pdf):
+                return False
+        if len(paper_sections)==len(pdf):
+            for element in paper_sections:
+                writeinfo(element[0].replace(':',''),element[2],element[1].replace('\n',''))
+        else:
+            for element in paper_sections1:
+                writeinfo(element[0].replace(':',''),element[1],element[2].replace('\n',''))
     return True
 
 def testfunc():
     get_llm_config()
     pdf=[#"A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm",
          "A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems",
-         #"An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario",
+         "An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario",
          ]
     retrieval_function=get_all_rag(pdf)
     review(pdf,retrieval_function)

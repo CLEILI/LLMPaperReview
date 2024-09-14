@@ -28,12 +28,12 @@ def reviewallpaper():
             new_filename,_ = os.path.splitext(filename)
             pdfs.append(new_filename)
 
-    
-    for i in range(len(pdfs) - 1, -1, -1):
+    #NOTE: recover this section code
+    '''for i in range(len(pdfs) - 1, -1, -1):
         if check_layout(pdfs[i])=="NO":
             print(f"{pdfs[i]} layout wrong")
             pdfs.remove(pdfs[i])#The num of wrong layout should be less that 40%
-        print(f"{i} check down")
+        print(f"{i} check down")'''
 
     write_log(pdfs)
     retrieval_function=get_all_rag(pdfs)
@@ -45,9 +45,13 @@ def reviewallpaper():
 
         for i in range(0,len(pdfs),workload):#loop workload 
             pdf=pdfs[i:i+workload]
+            retry=10
             tag=False
             while not tag:
                 tag=review(pdf,retrieval_function)#to prevent gpt just pre return {"comment" and get less paper outcome
+                retry-=1
+                if retry==0:
+                    break
             print(f"{MAGENTA}First round {j} times {i}-{i+len(pdf)} papers down{RESET}")
 
         copy_file(chatout_dir+"/chatout1",chatout_dir+f"/chatout1_{j}")
@@ -69,9 +73,13 @@ def reviewallpaper():
 
         for i in range(0,len(first_round_pdfs),int(workload*0.6)):
             pdf=first_round_pdfs[i:i+int(workload*0.6)]
+            retry=10
             tag=False
             while not tag:
                 tag=group_chat(pdf,retrieval_function)
+                retry-=1
+                if retry==0:
+                    break
             print(f"{MAGENTA}Second round {j} times {i}-{i+len(pdf)} papers down{RESET}")
 
         copy_file(chatout_dir+"/chatout2",chatout_dir+f"/chatout2_{j}")
@@ -141,16 +149,24 @@ def recover_from_log(pdfs:str,successround:int):
         if round==0 and j==firstbegin:
             for i in range(0,len(needreviewed),workload):#loop workload 
                 pdf=needreviewed[i:i+workload]
+                retry=10
                 tag=False
                 while not tag:
                     tag=review(pdf,retrieval_function)
+                    retry-=1
+                    if retry==0:
+                        break
                 print(f"{RED}First round {j} times {i+len(reviewedpdfs)}-{i+len(pdf)+len(reviewedpdfs)} papers down{RESET}")
         else:
             for i in range(0,len(pdfs),workload):#loop workload 
                 pdf=pdfs[i:i+workload]
+                retry=10
                 tag=False
                 while not tag:
                     tag=review(pdf,retrieval_function)
+                    retry-=1
+                    if retry==0:
+                        break
                 print(f"{RED}First round {j} times {i}-{i+len(pdf)} papers down{RESET}")
         copy_file(chatout_dir+"/chatout1",chatout_dir+f"/chatout1_{j}")
         conversation_log(chatout_dir+"/chatout1",log_dir,f"chatout1_{j}")
@@ -172,16 +188,24 @@ def recover_from_log(pdfs:str,successround:int):
         if round==1 and j==secondbegin:
             for i in range(0,len(needreviewed),int(workload*0.6)):#loop workload 
                 pdf=needreviewed[i:i+int(workload*0.6)]
+                retry=10
                 tag=False
                 while not tag:
                     tag=group_chat(pdf,retrieval_function)
+                    retry-=1
+                    if retry==0:
+                        break    
                 print(f"{RED}Second round {j} times {i+len(reviewedpdfs)}-{i+len(pdf)+len(reviewedpdfs)} papers down{RESET}")
         else:
             for i in range(0,len(first_round_pdfs),int(workload*0.6)):
                 pdf=first_round_pdfs[i:i+int(workload*0.6)]
+                retry=10
                 tag=False
                 while not tag:
                     tag=group_chat(pdf,retrieval_function)
+                    retry-=1
+                    if retry==0:
+                        break
                 print(f"{RED}Second round {j} times {i}-{i+len(pdf)} papers down{RESET}")
         copy_file(chatout_dir+"/chatout2",chatout_dir+f"/chatout2_{j}")
         conversation_log(chatout_dir+"/chatout2",log_dir,f"chatout2_{j}")

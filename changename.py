@@ -1,78 +1,69 @@
 from setenvrion import pdf_dir,image_dir
 import os
-pdfs=[]
-pdfs_path=pdf_dir
-'''for filename in os.listdir(pdfs_path):#read all pdf names
-    if filename.endswith('.pdf'):
-        new_filename=''
-        if "conff" in filename:
-            print(filename)
-            new_filename=filename.replace("conff","confi")
-        if "Classiff" in filename:
-            print(filename)
-            new_filename=filename.replace("Classiff","Classifi")
-        new,_ = os.path.splitext(filename)
-        pdfs.append(new)'''
-name=[]
-#TODO:change pdf name and image name which include the words
-#NOTE:dont consider the uppper lower alpherbet because I change all the file,just ensure the word have no syntax errors
-for filename in os.listdir(pdfs_path):#read all pdf names
-    if filename.endswith('.pdf'): 
-        newname=filename
-        temp=filename
-        #Trafffc,Conffdential,Classiffcation,Offfoading,Afffnity,Proffle
-        #Identiffcation,Efffcient,Efffciency,Artiffcial,Speciffc
-        if "Trafffc" in filename:
-            newname=temp.replace("Trafffc","Traffic")
-        if "Conffdential" in filename:
-            newname=temp.replace("Conffdential","Confidential")
-        if "Classiffcation" in filename:
-            newname=temp.replace("Classiffcation","Classification")
-        if "Offfoading" in filename:
-            newname=temp.replace("Offfoading","Offloading")
-        if "Afffnity" in filename:
-            newname=temp.replace("Afffnity","Affinity")
-        if "Proffle" in filename:
-            newname=temp.replace("Proffle","Profile")
-        if "Identiffcation" in filename:
-            newname=temp.replace("Identiffcation","Identification")
-        if "Efffcient" in filename:
-            newname=temp.replace("Efffcient","Efficient")
-        if "Efffciency" in filename:
-            newname=temp.replace("Efffciency","Efficiency")
-        if "Artiffcial" in filename:
-            newname=temp.replace("Artiffcial","Artificial")
-        if "Speciffc" in filename:
-            newname=temp.replace("Speciffc","Specific")
-        os.rename(f"./paper_pdfs/{filename}",f"./paper_pdfs/{newname}")
-    if filename.endswith('.jpg'):
-        newname=filename
-        temp=filename
-        #Trafffc,Conffdential,Classiffcation,Offfoading,Afffnity,Proffle
-        #Identiffcation,Efffcient,Efffciency,Artiffcial,Speciffc
-        if "Trafffc" in filename:
-            newname=temp.replace("Trafffc","Traffic")
-        if "Conffdential" in filename:
-            newname=temp.replace("Conffdential","Confidential")
-        if "Classiffcation" in filename:
-            newname=temp.replace("Classiffcation","Classification")
-        if "Offfoading" in filename:
-            newname=temp.replace("Offfoading","Offloading")
-        if "Afffnity" in filename:
-            newname=temp.replace("Afffnity","Affinity")
-        if "Proffle" in filename:
-            newname=temp.replace("Proffle","Profile")
-        if "Identiffcation" in filename:
-            newname=temp.replace("Identiffcation","Identification")
-        if "Efffcient" in filename:
-            newname=temp.replace("Efffcient","Efficient")
-        if "Efffciency" in filename:
-            newname=temp.replace("Efffciency","Efficiency")
-        if "Artiffcial" in filename:
-            newname=temp.replace("Artiffcial","Artificial")
-        if "Speciffc" in filename:
-            newname=temp.replace("Speciffc","Specific")
-        os.rename(f"./images/{filename}",f"./images/{newname}")
+def WrongWords():
+    #TODO:change pdf name and image name which include the words
+    #NOTE:dont consider the uppper lower alpherbet because I change all the file,just ensure the word have no syntax errors
+    for filename in os.listdir(image_dir):#read all pdf names
+        if filename.endswith('.pdf'): 
+            newname=filename
+            temp=filename
+            #Trafffc,Conffdential,Classiffcation,Offfoading,Afffnity,Proffle
+            #Identiffcation,Efffcient,efficient,Efffciency,Artiffcial,Speciffc
+            if "Trafffc" in filename:
+                newname=temp.replace("Trafffc","Traffic")
+            if "Conffdential" in filename:
+                newname=temp.replace("Conffdential","Confidential")
+            if "Classiffcation" in filename:
+                newname=temp.replace("Classiffcation","Classification")
+            if "Offfoading" in filename:
+                newname=temp.replace("Offfoading","Offloading")
+            if "Afffnity" in filename:
+                newname=temp.replace("Afffnity","Affinity")
+            if "Proffle" in filename:
+                newname=temp.replace("Proffle","Profile")
+            if "Identiffcation" in filename:
+                newname=temp.replace("Identiffcation","Identification")
+            if "Efffcient" in filename:
+                newname=temp.replace("Efffcient","Efficient")
+            if "efffcient" in filename:
+                newname=temp.replace("efffcient","efficient")
+            if "Efffciency" in filename:
+                newname=temp.replace("Efffciency","Efficiency")
+            if "Artiffcial" in filename:
+                newname=temp.replace("Artiffcial","Artificial")
+            if "Speciffc" in filename:
+                newname=temp.replace("Speciffc","Specific")
+            os.rename(f"./paper_pdfs/{filename}",f"./paper_pdfs/{newname}")
+        if filename.endswith('.jpg'):
+            newname=filename
+            temp=filename
+            #Trafffc,Conffdential,Classiffcation,Offfoading,Afffnity,Proffle
+            #Identiffcation,Efffcient,Efffciency,Artiffcial,Speciffc
+            if "Trafffc" in filename:
+                newname=temp.replace("Trafffc","Traffic")
+            if "Conffdential" in filename:
+                newname=temp.replace("Conffdential","Confidential")
+            if "Classiffcation" in filename:
+                newname=temp.replace("Classiffcation","Classification")
+            if "Offfoading" in filename:
+                newname=temp.replace("Offfoading","Offloading")
+            if "Afffnity" in filename:
+                newname=temp.replace("Afffnity","Affinity")
+            if "Proffle" in filename:
+                newname=temp.replace("Proffle","Profile")
+            if "Identiffcation" in filename:
+                newname=temp.replace("Identiffcation","Identification")
+            if "Efffcient" in filename:
+                newname=temp.replace("Efffcient","Efficient")
+            if "efffcient" in filename:
+                newname=temp.replace("efffcient","efficient")
+            if "Efffciency" in filename:
+                newname=temp.replace("Efffciency","Efficiency")
+            if "Artiffcial" in filename:
+                newname=temp.replace("Artiffcial","Artificial")
+            if "Speciffc" in filename:
+                newname=temp.replace("Speciffc","Specific")
+            os.rename(f"./images/{filename}",f"./images/{newname}")
 
 
 '''
@@ -107,3 +98,23 @@ BufferConcede Conceding Buffer for RoCE Trafffc in TCP RoCE Mix-Flows
 
 
 '''
+def DeleteSpace(folder_path):
+
+    # 遍历文件夹中的所有文件
+    for filename in os.listdir(folder_path):
+        # 检查文件是否以 ".pdf" 结尾，并且在 ".pdf" 前是否有空格
+        if filename.endswith('.jpg') and ' .jpg' in filename:
+            # 构造新的文件名，去除 .pdf 前的空格
+            new_filename = filename.replace(' .jpg', '.jpg')
+            
+            # 获取完整的旧文件路径和新文件路径
+            old_file = os.path.join(folder_path, filename)
+            new_file = os.path.join(folder_path, new_filename)
+            
+            # 重命名文件
+            os.rename(old_file, new_file)
+            print(f"重命名: {filename} -> {new_filename}")
+
+    print("文件名处理完成。")
+
+DeleteSpace("./images")

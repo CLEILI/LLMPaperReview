@@ -35,4 +35,4 @@ def test():
     print(similarity(pdfs))
 
 
-#test()
+test()
