@@ -1,7 +1,7 @@
 from autogen import UserProxyAgent,AssistantAgent,GroupChat,GroupChatManager,register_function,ConversableAgent
-from setenvrion import get_llm_config,chatout_dir,workload
+from setenvrion import get_llm_config,chatout_dir,pdf_dir
 from get_rag_1 import get_all_rag
-import sys,re,json
+import sys,re,json,os
 from typing import Callable
 def regis_func(
     f: Callable,
@@ -36,26 +36,26 @@ def group_chat(pdf:list,retrieval_function):
         human_input_mode="NEVER",
         #system_message="""Reply TERMINATE if the task has been solved at full satisfaction.
         #Otherwise, reply CONTINUE, or the reason why the task is not solved yet.""",
-        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "Paper:" in str(msg["content"]),
+        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "**Paper:**" in str(msg["content"]),
     )
     chiefeditor=AssistantAgent(
         name="chiefeditor",
         llm_config=llm_config,
-        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "Paper:" in str(msg["content"]),
+        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "**Paper:**" in str(msg["content"]),
         system_message="You are a journal chiefeditor, as the Editor-in-Chief, you are joining the final round table discussion to review and finalize the publication's upcoming issue. Your responsibilities include leading the discussion, providing decisive input on the content lineup, and ensuring that all papers meet the publication's standards of quality and relevance. You will evaluate each piece for its contribution to the overall theme, make recommendations for last-minute edits, and address any concerns raised by the editorial team. Your goal is to ensure a cohesive and compelling issue that upholds the publication's voice and vision. Additionally, you are supposed to decide the scores and comments for each paper based on the discussion process",
         description="a journal chiefeditor who participate in the final review of paper",
     )
     subeditor=AssistantAgent(
         name="subeditor",
         llm_config=llm_config,
-        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "Paper:" in str(msg["content"]),
+        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "**Paper:**" in str(msg["content"]),
         system_message="You are a journal subeditor, as the Subeditor, you are joining the final round table discussion to contribute to the review and finalization of the publication's upcoming issue. Your role involves providing detailed feedback on the papers, ensuring grammatical accuracy, factual correctness, and adherence to the publication's style guide. You will collaborate with the Editor-in-Chief and other editorial team members to make any necessary last-minute edits and improvements. Your keen eye for detail and commitment to quality will help ensure that the final content is polished, engaging, and ready for publication.",
         description="a journal subeditor who participate in the final review of paper",
     )
     professor=AssistantAgent(
         name="expert",
         llm_config=llm_config,
-        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "Paper:" in str(msg["content"]),
+        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "**Paper:**" in str(msg["content"]),
         system_message="You are a journal expert, as a expert, you are joining the final round table discussion to provide expert insights and academic perspectives on the topics being covered in the publication's upcoming issue. Your role involves critically evaluating the depth and accuracy of the content, ensuring that it meets high academic and intellectual standards. You will offer constructive feedback, suggest improvements, and help refine complex ideas to make them accessible to a broader audience. Your expertise will be invaluable in enhancing the quality and credibility of the publication, ensuring it delivers well-researched and thought-provoking content.",
         description="a journal expert who participate in the final review of paper"
     )
@@ -95,8 +95,10 @@ def group_chat(pdf:list,retrieval_function):
     8. The paper should have a certain contribution and driving effect on the given thematic area.
     """
     message=rf'''
-Now there is a final round table to decide which papers should be accepted in a conference, the three roles of chiefeditor, subeditor and expert should discuss and review the paper in {pdf}. 
+Now there is a final round table to decide which papers should be accepted in a conference, the three roles of chiefeditor, subeditor and expert should discuss and review the papers in {pdf}. 
 
+To review the papers, they must finish this job step-by-step:
+- Step 1:EVALUATE EVERY PAPER. 
 They should review and evaluate each paper accurately based on each of the following standards one by one:
 {standards}
 Pay attention to using uniform evaluation standards for all papers. In their questions, there must be the paper's name.
@@ -110,60 +112,54 @@ Here are the examples of their questions:
 "Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a clear, correct, reliable, and valuable conclusion?"
 "Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a certain contribution and driving effect on the given thematic area?"
 
-After evaluating all the standards and asking the sufficient questions, they must think step by step, chiefeditor gives a final score of all papers based on the review comments and discuss process at the end of conversation. (The maximum score is 100, which should be accurate to two decimal places.) 
-The review comments should be personalized and pertinence and it should include the advantages and disadvantages of corresponding paper.
+- Step 2:COMPARE ALL PAPERS. 
+They should compare the advantages and disadvantages of all papers in {pdf} and give a rank of these papers.
 
-At last, chiefeditor just need to reply all papers' information in the follwing examples' format:
-{{"comment": "This paper presents original and effective methodology for indoor localization, validated by extensive experiments. Further analysis on the algorithm's scalability could improve its contribution to the field.", "papername": "FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN", "score": "90.00"}}
-{{"comment": "It contributes valuable solutions for blockchain integration, demonstrating effective approaches for merging diverse systems. Inclusion of additional real-world case studies would enhance its practical relevance.", "papername": "A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems", "score": "80.00"}}
+- Step 3:GENERATE REVIEW COMMENTS.
+They must generate the review comments of every paper. The review comments of each paper should be personalized and pertinence and it should include the advantages and disadvantages of corresponding paper.
+
+- Step 4:SCORE ALL PAPERS.
+They must think step by step. Then decide a final score of every paper based on the responses of all tool calls and the comparison. (The maximum score is 100, which should be accurate to two decimal places.) 
+
+- Step 5:EXPLAIN THE SCORES.
+At the same time, they must explain why they give that score to the papers. 
+
+- Step 6:REPLY EVERY PAPER'S INFORMATION.
+After they explain the scores, they just need to reply every paper's information in the template of the following examples and terminate the conversation.
+Here is the template of one paper's information, you must follow this format to output the information:
+**Paper:**\n<paper's name>\n
+**Comment:**\n<comment on paper>\n
+**Score:**\n<score of paper>\n
 '''
     sys.stdout=open(f"{chatout_dir}/chatout2","a+")
     a=user_proxy.initiate_chat(manager,message=message,max_turns=100)
     sys.stdout=sys.__stdout__
 
     s=""
-    flag=0
     for i in range(-1,-5,-1):
-        if "{\"comment\":" in a.chat_history[i]['content']:
+        if "**Paper:**" in a.chat_history[i]['content']:
             s=a.chat_history[i]['content']
-            flag=0
             break
-        if "Paper:" in a.chat_history[i]['content']:
-            s=a.chat_history[i]['content']
-            flag=1#3.5turbo
-            break
-    if flag==0:
-        pattern = r'\{.*?"comment".*?"papername".*?"score".*?\}'
-        matches = re.findall(pattern, s)
-        if len(matches)!=len(pdf):
-            return False
-        for element in matches:
-            pdfdic=json.loads(element)
-            writeinfo(pdfdic['papername'].replace(':',''),pdfdic['score'],pdfdic['comment'].replace('\n',''))
-    if flag==1:
-        pattern=r'\**?Paper: (.*?)\n\s*-+ ?\**?Comments?\**?:\**? (.*?)\n\s*-+ ?\**?Score\**?:\**? ([0-9.]+)'
-        pattern1=r'\**?Paper: (.*?)\n\s*-+ ?\**?Score\**?:\**? ([0-9.]+)\n\s*-+ ?\**?Comments?\**?:\**? (.*?)\n'
-        paper_sections = re.findall(pattern, s)
-        paper_sections1 = re.findall(pattern1, s)
-        if len(paper_sections)!=len(pdf):
-            if len(paper_sections1)!=len(pdf):
-                return False
-        if len(paper_sections)==len(pdf):
-            for element in paper_sections:
-                writeinfo(element[0].replace(':',''),element[2],element[1].replace('\n',''))
-        else:
-            for element in paper_sections1:
-                writeinfo(element[0].replace(':',''),element[1],element[2].replace('\n',''))        
+
+    pattern=r'\*\*Paper:\*\*\s*(.*?)\n\*\*Comment:\*\*\s*(.*?)\n\*\*Score:\*\*\s*([0-9.]+)'
+    paper_sections = re.findall(pattern, s)
+    if len(paper_sections)!=len(pdf):
+        return False
+    for element in paper_sections:
+        writeinfo(element[0].replace(':','').replace('\n','').rstrip(),element[2],element[1].replace('\n',''))
+        
     return True
 
 
 def testfunc():
-    pdfs=[#"A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm",
-         "A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems",
-         "An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario",
-         ]
     get_llm_config()
-    function=get_all_rag(pdfs)
+    pdfs=[]
+    pdfs_path=pdf_dir
+    for filename in os.listdir(pdfs_path):#read all pdf names
+        if filename.endswith('.pdf'):
+            new_filename,_ = os.path.splitext(filename)
+            pdfs.append(new_filename)
+    function=get_all_rag(pdfs[0:3])
     group_chat(pdfs,function)
 
-testfunc()#4o model problem
+#testfunc()#4o model problem

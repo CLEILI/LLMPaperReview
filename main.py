@@ -18,6 +18,7 @@ def reviewallpaper():
     config=get_llm_config()#to set environment variable
 
     write_log(str(config))
+    write_log(f"WorkLoad:{workload},RandomRound:{random_round}")
     current_timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
     write_log(current_timestamp)
 
@@ -137,9 +138,9 @@ def recover_from_log(pdfs:str,successround:int):
     
     needreviewed=list(set(pdfs).difference(set(reviewedpdfs)))
     print(f"recover begin {round+1}_{recoverbegin}")
-    if successround==5:
+    if successround==random_round*2-1:
         retrieval_function=get_all_rag(needreviewed)
-    elif successround==6:
+    elif successround==random_round*2:
         print("Dont need embeding")
     else:
         retrieval_function=get_all_rag(pdfs)
