@@ -1,8 +1,0 @@
-A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm
-0.00
-The paper introduces a data aggregation framework based on deep learning for mobile crowd-sensing, focusing on enhancing the quality of sensing data through deep learning techniques.
-
-A DRL-Based Edge Intelligent Servo Control with Semi-Closed-Loop Feedbacks in Industrial IoT
-85.00
-Provides valuable insights into edge intelligent servo control in industrial IoT.
-

@@ -2,6 +2,7 @@
 Each successfully execution's log may like:
 
 llm_config
+workload:5,random_round:1
 2024.7.17
 pdfs
 1_round_0
@@ -30,26 +31,25 @@ def read_log():#recover need clear chatout and rank file
     '''
     issuccess=True
     pdfs=[]
-    successround=random_round*2
+    successround=0
     if os.path.getsize(execute_log+"/record.log")==0:
         return issuccess,pdfs,0
     with open(execute_log+"/record.log","r") as f:
         lines=f.readlines()
-        if lines[-1]=="2_round_2\n":
-            return False,pdfs,successround
         #there may have the situation that LLM forget to write the "-" in the papername. It request hands on change
         if lines[-1][:-1]!="successful":
             issuccess=False
-            pdfs=lines[-1].split("#")
-            pdfs=pdfs[:-1]
-            for i in range(-2,-(len(lines)),-1):
+            for i in range(-1,-(len(lines)),-1):
+                if len(lines[i])>=1000:
+                    pdfs=lines[i].split("#")
+                    pdfs=pdfs[:-1]
+                    break
+            for i in range(-1,-(len(lines)),-1):
                 if bool(re.match(r"^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}(\.\d+)?$",lines[i][0:-1])):
                     return False,pdfs,0
                 if lines[i][0]=='1' or lines[i][0]=='2':
-                    round=lines[i]
+                    successround=int(lines[i][0])
                     break
-
-            successround=(int(round[0])-1)*random_round+int(round[-2])+1
     return issuccess,pdfs,successround
 
 

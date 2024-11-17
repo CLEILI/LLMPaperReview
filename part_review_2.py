@@ -1,7 +1,7 @@
 import os,json,re
 from autogen import AssistantAgent,UserProxyAgent,register_function
 import sys
-from setenvrion import get_llm_config,template_dir,image_dir,chatout_dir,layout_config,googleSearchKey,pdf_dir
+from setenvrion import get_llm_config,template_dir,image_dir,layout_config,googleSearchKey,pdf_dir,workspace
 from serpapi import GoogleSearch
 from autogen.agentchat.contrib.multimodal_conversable_agent import MultimodalConversableAgent
 from get_rag_1 import get_all_rag
@@ -30,7 +30,7 @@ def check_layout(pdfname:str)->str:
         },
     )
     
-    sys.stdout=open(chatout_dir+"/chatout1","a+")
+    #sys.stdout=open(chatout_dir+"/chatout1","a+")
     a=user_proxy.initiate_chat(
     image_agent,
     message=f"""
@@ -42,12 +42,12 @@ def check_layout(pdfname:str)->str:
     At last just need to reply YES or NO.
     """,
 )
-    sys.stdout=sys.__stdout__
+    #sys.stdout=sys.__stdout__
     flag=a.chat_history[-1]["content"]
     return flag
 
-def writeinfo(papername:str,score:str,comment:str)->str:
-    with open(chatout_dir+"/first_round.txt", mode='a+') as filename:#a+(append) w+(from top)
+def writeinfo(papername:str,score:str,comment:str,number:int)->str:
+    with open(workspace+f"/out/1_out_{number}.txt", mode='a+') as filename:#a+(append) w+(from top)
         filename.write(papername)
         filename.write('\n')
         filename.write(score)
@@ -70,7 +70,7 @@ def search_google_scholar(keyword:str)->str:
     #print(result)
     return [item['snippet'] for item in result['organic_results']]
 
-def review(pdf:list,retrieval_function):
+def review(number:int,pdf:list,retrieval_function):
     '''
     review the paper and record the conversation in chatout1
     '''
@@ -99,6 +99,13 @@ def review(pdf:list,retrieval_function):
     name="QuestionAnswer",
     description=f"useful when you want to answer questions about the papers",
 )
+    register_function(
+    check_layout,
+    caller=assistant,
+    executor=user_proxy,
+    name="layoutchecker",
+    description=f"useful when you want to check the layout of the paper",
+)
     '''register_function(
         search_google_scholar,
         caller=assistant,
@@ -120,12 +127,16 @@ def review(pdf:list,retrieval_function):
     message=rf"""
     Assume you are a reviewer of a conference, your job is to review papers in {pdf} and give every paper a reasonable score.
     To review the papers, you must finish this job step-by-step:
-    - Step 1:EVALUATE EVERY PAPER. 
+    - Step 1:CHECK PAPER'S LAYOUT.
+    You should check the layout of the paper by calling layoutchecker function. 
+    If the answer is "YES", then the paper's layout is qualified and the paper can proceed to the following steps. 
+    If the answer is "NO", then the paper's layout is not qualified, and this paper does not need to proceed to the next evaluation steps. The score of this paper will be set to 0.00 and the comments will be left blank.
+    - Step 2:EVALUATE QUALIFIED PAPERS. 
     To find the paper related content, you are supposed to call the QuestionAnswer function.
     You cannot ask vague questions. It is recommended that your questions based on each of the following standords. 
-    To evaluate the papers, you should check that if every paper in {pdf} meets each of the following standards one bye one: 
+    To evaluate the qualified papers, you should check that if the paper meets each of the following standards one bye one: 
     {standards}
-    Pay attention to using uniform evaluation standards for all papers. In your questions, there must be the paper's name.
+    Pay attention to using uniform evaluation standards for the papers. In your questions, there must be the paper's name.
     Here are the examples of your questions of paper named 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN':
     "Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a strong research background and address an important question?"
     "Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a complete paper structure?"
@@ -136,20 +147,21 @@ def review(pdf:list,retrieval_function):
     "Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a clear, correct, reliable, and valuable conclusion?"
     "Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a certain contribution and driving effect on the given thematic area?"
 
-    - Step 2:COMPARE ALL PAPERS. 
-    You should compare the advantages and disadvantages of all papers in {pdf} and give a rank of these papers.
+    - Step 3:COMPARE THE PAPERS. 
+    You should compare the advantages and disadvantages of the papers and give a rank of these papers.
 
-    - Step 3:GENERATE REVIEW COMMENTS.
-    You must generate the review comments of every paper. The review comments of each paper should be personalized and pertinence and it should include the advantages and disadvantages of corresponding paper.
+    - Step 4:GENERATE REVIEW COMMENTS.
+    You must generate the review comments of the paper. The review comments of each paper should be personalized and pertinence and it should include the advantages and disadvantages of corresponding paper.
 
-    - Step 4:SCORE ALL PAPERS.
-    You must think step by step. Then decide a final score of every paper based on the responses of all tool calls and the comparison. (The maximum score is 100, which should be accurate to two decimal places.) 
+    - Step 5:SCORE ALL PAPERS.
+    You must think step by step. Then decide a final score of the paper based on the responses of all tool calls and the comparison. (The maximum score is 100.00, which should be accurate to two decimal places.) 
+    Note that the paper with disqualified layout should be given a score of 0.00.
     
-    - Step 5:EXPLAIN THE SCORES.
+    - Step 6:EXPLAIN THE SCORES.
     At the same time, you must explain why you give that score to the papers. 
 
-    - Step 6:REPLY EVERY PAPER'S INFORMATION.
-    After you explain the scores, you just need to reply every paper's information in the template of the following examples and terminate the conversation.
+    - Step 7:REPLY ALL PAPERS' INFORMATION.
+    After you explain the scores, you just need to reply the information of all paper in {pdf} in the template of the following examples and terminate the conversation.
     Here is the template of one paper's information, you must follow this format to output the information:
     **Paper:**\n<paper's name>\n
     **Comment:**\n<comment on paper>\n
@@ -158,8 +170,8 @@ def review(pdf:list,retrieval_function):
     Start the work now.
     """
     
-    sys.stdout=open(chatout_dir+"/chatout1","a+")
-    a=user_proxy.initiate_chat(assistant,message=message)
+    sys.stdout=open(workspace+f"/chat/1_chat_{number}","a+")
+    a=user_proxy.initiate_chat(assistant,message=message,max_turns=30)
     sys.stdout=sys.__stdout__
 
     s=""
@@ -171,10 +183,10 @@ def review(pdf:list,retrieval_function):
 
     pattern=r'\*\*Paper:\*\*\s*(.*?)\n\*\*Comment:\*\*\s*(.*?)\n\*\*Score:\*\*\s*([0-9.]+)'
     paper_sections = re.findall(pattern, s)
-    if len(paper_sections)!=len(pdf):
+    if len(paper_sections)<len(pdf):
         return False
     for element in paper_sections:
-        writeinfo(element[0].replace(':','').replace('\n','').rstrip(),element[2],element[1].replace('\n',''))
+        writeinfo(element[0].replace(':','').replace('\n','').replace('*','').rstrip(),element[2],element[1].replace('\n',''),number)
 
     return True
 

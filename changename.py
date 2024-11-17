@@ -103,9 +103,9 @@ def DeleteSpace(folder_path):
     # 遍历文件夹中的所有文件
     for filename in os.listdir(folder_path):
         # 检查文件是否以 ".pdf" 结尾，并且在 ".pdf" 前是否有空格
-        if filename.endswith('.jpg') and ' .jpg' in filename:
+        if filename.endswith('.pdf') and ' .pdf' in filename:
             # 构造新的文件名，去除 .pdf 前的空格
-            new_filename = filename.replace(' .jpg', '.jpg')
+            new_filename = filename.replace(' .pdf', '.pdf')
             
             # 获取完整的旧文件路径和新文件路径
             old_file = os.path.join(folder_path, filename)
@@ -117,4 +117,33 @@ def DeleteSpace(folder_path):
 
     print("文件名处理完成。")
 
-DeleteSpace("./images")
+def ChangeSpace(folder_path):
+
+    # 遍历文件夹中的所有文件
+    for filename in os.listdir(folder_path):
+        # 检查文件是否以 ".pdf" 结尾，并且在 ".pdf" 前是否有空格
+        if filename.endswith('.pdf') and '  ' in filename:
+            # 构造新的文件名，去除 .pdf 前的空格
+            new_filename = filename.replace('  ', ' ')
+            
+            # 获取完整的旧文件路径和新文件路径
+            old_file = os.path.join(folder_path, filename)
+            new_file = os.path.join(folder_path, new_filename)
+            
+            # 重命名文件
+            os.rename(old_file, new_file)
+            print(f"重命名: {filename} -> {new_filename}")
+
+    print("文件名处理完成。")
+
+def list_files_interactively(folder_path):
+    # 获取文件夹中的所有文件名
+    files = os.listdir(folder_path)
+    
+    # 逐个显示文件名，等待用户按 Enter 键
+    for file in files:
+        input()
+        print(file)
+
+#list_files_interactively("./paper_pdfs")
+ChangeSpace("./paper_pdfs")

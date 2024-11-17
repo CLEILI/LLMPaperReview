@@ -1,119 +1,15 @@
-from autogen import UserProxyAgent,AssistantAgent,GroupChat,GroupChatManager,register_function,ConversableAgent
-from setenvrion import get_llm_config,chatout_dir
-from get_rag import get_all_rag
-import sys,re,json
-from typing import Callable
-def regis_func(
-    f: Callable,
-    caller: ConversableAgent,
-    executor: ConversableAgent,
-    name: str,
-    description: str,
-    api_type:str,
-) -> None:
-    f = caller.register_for_llm(name=name, description=description,api_style=api_type)(f)
-    executor.register_for_execution(name=name)(f)
-    
-def group_chat(pdf:list,retrieval_function):
-    '''
-    simulate the round table of paper review
-    '''
-    llm_config=get_llm_config()
-    user_proxy=UserProxyAgent(
-        name="user_proxy",
-        code_execution_config=False,
-        human_input_mode="NEVER",
-        #system_message="""Reply TERMINATE if the task has been solved at full satisfaction.
-        #Otherwise, reply CONTINUE, or the reason why the task is not solved yet.""",
-        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]),
-    )
-    chiefeditor=AssistantAgent(
-        name="chiefeditor",
-        llm_config=llm_config,
-        system_message="You are a journal chiefeditor, as the Editor-in-Chief, you are joining the final round table discussion to review and finalize the publication's upcoming issue. Your responsibilities include leading the discussion, providing decisive input on the content lineup, and ensuring that all papers meet the publication's standards of quality and relevance. You will evaluate each piece for its contribution to the overall theme, make recommendations for last-minute edits, and address any concerns raised by the editorial team. Your goal is to ensure a cohesive and compelling issue that upholds the publication's voice and vision. Additionally, you are supposed to decide the scores and comments for each paper based on the discussion process",
-        description="a journal chiefeditor who participate in the final review of paper",
-    )
-    subeditor=AssistantAgent(
-        name="subeditor",
-        llm_config=llm_config,
-        system_message="You are a journal subeditor, as the Subeditor, you are joining the final round table discussion to contribute to the review and finalization of the publication's upcoming issue. Your role involves providing detailed feedback on the papers, ensuring grammatical accuracy, factual correctness, and adherence to the publication's style guide. You will collaborate with the Editor-in-Chief and other editorial team members to make any necessary last-minute edits and improvements. Your keen eye for detail and commitment to quality will help ensure that the final content is polished, engaging, and ready for publication.",
-        description="a journal subeditor who participate in the final review of paper",
-    )
-    professor=AssistantAgent(
-        name="expert",
-        llm_config=llm_config,
-        system_message="You are a journal expert, as a expert, you are joining the final round table discussion to provide expert insights and academic perspectives on the topics being covered in the publication's upcoming issue. Your role involves critically evaluating the depth and accuracy of the content, ensuring that it meets high academic and intellectual standards. You will offer constructive feedback, suggest improvements, and help refine complex ideas to make them accessible to a broader audience. Your expertise will be invaluable in enhancing the quality and credibility of the publication, ensuring it delivers well-researched and thought-provoking content.",
-        description="a journal expert who participate in the final review of paper"
-    )
+from openai import OpenAI
 
-    groupchat=GroupChat(
-        agents=[user_proxy,chiefeditor,subeditor,professor],
-        messages=[],
-        speaker_selection_method="auto",
-        max_round=100,
-        send_introductions=True,
-        allow_repeat_speaker=False,
-        #func_call_filter=False,
-    )
-    for i in range(len(pdf)):
-        j=0
-        for assistant in [chiefeditor,subeditor,professor]:
-            regis_func(
-            retrieval_function,
-            caller=assistant,
-            executor=user_proxy,
-            name=f"answer_{i}_{j}",
-            description=f"useful when someone want to evaluate or ask questions about the paper named \"{pdf[i]}\"",
-            api_type="tool",
-            )
-            j+=1
+client = OpenAI(api_key='sk-xADQYFF4GtkR8FpA30E97684D7D34574BeF61c91833a1025',
+                base_url='https://api.tata-api.com/v1')
+print(client.models.list())
+['Deep Reinforcement Learning based Economic Dispatch with Cost Constraint in Cyber Physical Energy System', 'TBA-GNN A Trafffc Behavior Analysis Model with Graph Neural Networks for Malicious Trafffc Detection', 'Enhancing 360-Degree Video Streaming A Spectral Clustering-Based Multicast System Assisted by MEC', 'Anti-Collusion Truth Discovery Scheme in Mobile Crowd Sensing', 'Federated Learning Based on Dynamic Gradient Compression Strategy', 'A Trustworthy Industrial Data Management Scheme Based on Decentralized Redactable Blockchain', 'A Key Exchange Protocol with Imperfect Channel Reciprocity', 'E-SAGE Explainability-based Defense Against Backdoor Attacks on Graph Neural Networks', 'Traceable Health Data Sharing Based-on Blockchain', 'Client-Oriented Training Energy Consumption Optimization Algorithm in Clustered Federated Learning with Model Partition', 'Improved Proximal Policy Optimization Algorithm for Controller Design in Hybrid UAVs', 'MICABAC Multidimensional Industrial Control Attribute-Based Access Control Model', 'An Improved Moth Flame Search for WSN Coverage Optimization', 'Weighted Worst-Case Reliability Maximization of IRS-Assisted URLLC Systems under Delay Constraints', 'A Conffdential Batch Payment Scheme with Integrated Auditing for Enhanced Data Trading Security', 'Efficient On-Device Training for Lightweight Fall Detection', 'S-TSG Description Model of Transient Execution Attacks in Intel SGX', 'WOLFE WIFI BASED OBJECT RECOGNITION FRAMEWORK USING MULTIPLE FEATURES', 'Profinder Towards Professionals Recognition on Mobile Devices for Users with Cognitive Decline', 'Universal Sign Language Recognition System Using Gesture Description Generation and Large Language Model', 'OCF-HP An Offline Compaction Framework based on Hotspot Prediction for Data Lakehouse', 'DGAT-net Dynamic Graph Attention for 3D Point Cloud Semantic Segmentation', 'Wireless Portable Dry Electrode Multi-channel sEMG Acquisition System', 'Byzantine-Robust Federated Learning Based on Blockchain', 'Enabling Spatial Database to Answer Approximate Keyword Queries in Cloud', 'Multi-agent Deep Reinforcement Learning-based UAV-enable Two Time-scale NOMA Communication Networks Optimization', 'An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer', 'Probabilistic oﬄoading algorithm for opportunistic networks integrating node inﬂuence prediction', 'Task Offloading in Vehicular Networks under Complex Interference Environments', 'Towards Robust Internet of Vehicles Security An Edge Node-Based Machine Learning Framework for Attack Classiffcation', 'NA-net Fusing Geometric Structure for 3D Point Cloud Semantic Segmentation', 'Deterministic Edge Data Center Network Performance Analysis', '3D Physical Layer Secure Transmission for UAV-assisted Mobile Communications without locations of Eavesdroppers', 'Multi-view Fusion Human Posture Regression Method Based on Deep Supervision Using Radar', 'FEAttack A Fast and Efficient Hard-Label Textual Attack Framework', 'Joint Data and Computing Offfoading Strategies for Cloud-Edge Collaboration', 'A Green Computing Approach for IoT Traffic Identification based on Status Graphs', 'Fault Tolerant and Load Balanced Deployment of Access Points in WLANs', 'Enhancing Emergency Communications via UAV-Assisted Home-Independent Broadband Mobile Networks', 'A Novel Two-stage Algorithm for Mobile Crowdsourcing Task Assignment', 'A Secure and Efficient Privacy Data Aggregation Mechanism', 'FedDAGC Dynamic Adaptive Graph Coarsening for Federated Learning on Non-IID Graphs', 'A Residual Graph Neural Network Algorithm Based on Unfolded WMMSE for Power Allocation', 'Detecting Computer Memory Behaviours by Exploiting Electromagnetic Emanations ', 'Joint Optimization Design of Intelligence Reflecting Surface Assisted MU-MISO System Based on Deep Reinforcement Learning', 'Dynamic Offfoading Control for Waste Sorting Based on Deep Q-Network', 'Distributed Personalized Federated Learning in Wireless Ad Hoc Networks', 'Federated Learning Scheme Based on Simulated Annealing and Gaussian Disturbed Particle Swarm', 'NRetransmit Keystream Reuse Attack Based on 5G NAS Layer Vulnerabilities', 'QoS-aware Energy-Efffcient Multi-UAV Offfoading Ratio and Trajectory Control Algorithm in Mobile Edge Computing', 'Harnessing Afffnity Propagation for Enhanced Clustering in Federated Learning', 'Instantaneous frequency ﬁtting algorithm for high-resolution fractional time-frequency representation', 'SmoothGame Low Bitrate Spikes Cloud Gaming via Intelligent Frame Enhancement', 'Low-cost Robot Path Planning Mechanism for Escaping from Dead Ends', 'An Offloading Strategy Based On Dynamic Priority Adjustment For Vehicular Edge Computing', 'Joint Optimization of Maximum Achievable Rate in SWIPT Systems Assisted by Active STAR-RIS', 'UG-STNN A Spatial-Temporal Neural Network Based on Unsupervised Graph Representation Module for Traffic Flow Prediction', 'FedDCT A Dynamic Cross-Tier Federated Learning Framework in Wireless Networks', "Feature Selection and 'Opt-Forest' Ensemble Model based Network Intrusion Detection", ...]
+['Deep Reinforcement Learning based Economic Dispatch with Cost Constraint in Cyber Physical Energy System', 'TBA-GNN A Trafffc Behavior Analysis Model with Graph Neural Networks for Malicious Trafffc Detection', 'Enhancing 360-Degree Video Streaming A Spectral Clustering-Based Multicast System Assisted by MEC', 'Anti-Collusion Truth Discovery Scheme in Mobile Crowd Sensing', 'Federated Learning Based on Dynamic Gradient Compression Strategy', 'A Trustworthy Industrial Data Management Scheme Based on Decentralized Redactable Blockchain', 'A Key Exchange Protocol with Imperfect Channel Reciprocity', 'E-SAGE Explainability-based Defense Against Backdoor Attacks on Graph Neural Networks', 'Traceable Health Data Sharing Based-on Blockchain', 'Client-Oriented Training Energy Consumption Optimization Algorithm in Clustered Federated Learning with Model Partition', 'Improved Proximal Policy Optimization Algorithm for Controller Design in Hybrid UAVs', 'MICABAC Multidimensional Industrial Control Attribute-Based Access Control Model', 'An Improved Moth Flame Search for WSN Coverage Optimization', 'Weighted Worst-Case Reliability Maximization of IRS-Assisted URLLC Systems under Delay Constraints', 'A Conffdential Batch Payment Scheme with Integrated Auditing for Enhanced Data Trading Security', 'Efficient On-Device Training for Lightweight Fall Detection', 'S-TSG Description Model of Transient Execution Attacks in Intel SGX', 'WOLFE WIFI BASED OBJECT RECOGNITION FRAMEWORK USING MULTIPLE FEATURES', 'Profinder Towards Professionals Recognition on Mobile Devices for Users with Cognitive Decline', 'Universal Sign Language Recognition System Using Gesture Description Generation and Large Language Model', 'OCF-HP An Offline Compaction Framework based on Hotspot Prediction for Data Lakehouse', 'DGAT-net Dynamic Graph Attention for 3D Point Cloud Semantic Segmentation', 'Wireless Portable Dry Electrode Multi-channel sEMG Acquisition System', 'Byzantine-Robust Federated Learning Based on Blockchain', 'Enabling Spatial Database to Answer Approximate Keyword Queries in Cloud', 'Multi-agent Deep Reinforcement Learning-based UAV-enable Two Time-scale NOMA Communication Networks Optimization', 'An Interpretation Method for Provenance-based Intrusion Detection Based on GNNExplainer', 'Probabilistic oﬄoading algorithm for opportunistic networks integrating node inﬂuence prediction', 'Task Offloading in Vehicular Networks under Complex Interference Environments', 'Towards Robust Internet of Vehicles Security An Edge Node-Based Machine Learning Framework for Attack Classiffcation', 'NA-net Fusing Geometric Structure for 3D Point Cloud Semantic Segmentation', 'Deterministic Edge Data Center Network Performance Analysis', '3D Physical Layer Secure Transmission for UAV-assisted Mobile Communications without locations of Eavesdroppers', 'Multi-view Fusion Human Posture Regression Method Based on Deep Supervision Using Radar', 'FEAttack A Fast and Efficient Hard-Label Textual Attack Framework', 'Joint Data and Computing Offfoading Strategies for Cloud-Edge Collaboration', 'A Green Computing Approach for IoT Traffic Identification based on Status Graphs', 'Fault Tolerant and Load Balanced Deployment of Access Points in WLANs', 'Enhancing Emergency Communications via UAV-Assisted Home-Independent Broadband Mobile Networks', 'A Novel Two-stage Algorithm for Mobile Crowdsourcing Task Assignment', 'A Secure and Efficient Privacy Data Aggregation Mechanism', 'FedDAGC Dynamic Adaptive Graph Coarsening for Federated Learning on Non-IID Graphs', 'A Residual Graph Neural Network Algorithm Based on Unfolded WMMSE for Power Allocation', 'Detecting Computer Memory Behaviours by Exploiting Electromagnetic Emanations ', 'Joint Optimization Design of Intelligence Reflecting Surface Assisted MU-MISO System Based on Deep Reinforcement Learning', 'Dynamic Offfoading Control for Waste Sorting Based on Deep Q-Network', 'Distributed Personalized Federated Learning in Wireless Ad Hoc Networks', 'Federated Learning Scheme Based on Simulated Annealing and Gaussian Disturbed Particle Swarm', 'NRetransmit Keystream Reuse Attack Based on 5G NAS Layer Vulnerabilities', 'QoS-aware Energy-Efffcient Multi-UAV Offfoading Ratio and Trajectory Control Algorithm in Mobile Edge Computing', 'Harnessing Afffnity Propagation for Enhanced Clustering in Federated Learning', 'Instantaneous frequency ﬁtting algorithm for high-resolution fractional time-frequency representation', 'SmoothGame Low Bitrate Spikes Cloud Gaming via Intelligent Frame Enhancement', 'Low-cost Robot Path Planning Mechanism for Escaping from Dead Ends', 'An Offloading Strategy Based On Dynamic Priority Adjustment For Vehicular Edge Computing', 'Joint Optimization of Maximum Achievable Rate in SWIPT Systems Assisted by Active STAR-RIS', 'UG-STNN A Spatial-Temporal Neural Network Based on Unsupervised Graph Representation Module for Traffic Flow Prediction', 'FedDCT A Dynamic Cross-Tier Federated Learning Framework in Wireless Networks', "Feature Selection and 'Opt-Forest' Ensemble Model based Network Intrusion Detection", ...]
 
 
-    manager=GroupChatManager(groupchat=groupchat,llm_config=llm_config)
-    standards="""
-    1. The paper should have a strong research background and address an important question.
-    2. The paper should have a complete paper structure.
-    3. The paper should have a clear theme, analysis, and conclusion.
-    4. The content of the paper must be original to enhance the existing knowledge system in the given topic area.
-    5. Experiments, statistics, and other analyses must be conducted in accordance with high-tech standards and described in sufficient detail. Experiments, data, and analysis should be able to support the current conclusion.
-    6. If there is algorithm design, it is necessary to ensure that the algorithm is feasible and effective.
-    7. The conclusion must be clear, correct, reliable, and valuable.
-    8. The paper should have a certain contribution and driving effect on the given thematic area.
-    """
-    message=rf'''
-Now there is a final round table to decide which papers should be accepted in a conference, the three roles of chiefeditor, subeditor and expert should discuss and review the paper in {pdf}. 
-
-They should have discussions around some questions. Here are the examples of their questions for paper named 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN':
-"Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a strong research background and address an important question?"
-"Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a complete paper structure?"
-"Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a clear theme, analysis, and conclusion?"
-"Is the content of 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' original and does it enhance the existing knowledge system in the given topic area?"
-"Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' conduct experiments, statistics, and analyses in accordance with high-tech standards and describe them in sufficient detail?"
-"Is the algorithm in 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' feasible and effective?"
-"Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a clear, correct, reliable, and valuable conclusion?"
-"Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a certain contribution and driving effect on the given thematic area?"
-Pay attention to using uniform evaluation standards for all papers. In their questions, there must be the paper's name.
-
-After evaluating all the standards and asking the sufficient questions, they must think step by step, chiefeditor gives a final score of each paper based on the review comments and discuss process. (The maximum score is 100, which should be accurate to two decimal places.) 
-The review comments should be personalized and pertinence and it should include the advantages and disadvantages of corresponding paper.
-
-At last, chiefeditor just need to reply every paper's information.
-Here is an example of two papers' information:
-{{"comment": "This paper presents original and effective methodology for indoor localization, validated by extensive experiments. Further analysis on the algorithm's scalability could improve its contribution to the field.", "papername": "FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN", "score": "90.00"}}
-{{"comment": "It contributes valuable solutions for blockchain integration, demonstrating effective approaches for merging diverse systems. Inclusion of additional real-world case studies would enhance its practical relevance.", "papername": "A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems", "score": "80.00"}}
-'''
-    sys.stdout=open(f"{chatout_dir}/chatout2","a+")
-    a=user_proxy.initiate_chat(manager,message=message)
-    sys.stdout=sys.__stdout__
 
 
-def testfunc():
-    pdfs=[#"A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm",
-         "A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems",
-         "An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario",
-         ]
-    get_llm_config()
-    function=get_all_rag(pdfs)
-    group_chat(pdfs,function)
+'Deep Reinforcement Learning based Economic Dispatch with Cost Constraint in Cyber Physical Energy System'
+'Deep Reinforcement Learning based Economic Dispatch with Cost Constraint in Cyber Physical Energy System'
 
-testfunc()#4o model problem
+

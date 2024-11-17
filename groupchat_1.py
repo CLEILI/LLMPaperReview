@@ -1,5 +1,5 @@
 from autogen import UserProxyAgent,AssistantAgent,GroupChat,GroupChatManager,register_function,ConversableAgent
-from setenvrion import get_llm_config,chatout_dir,pdf_dir
+from setenvrion import get_llm_config,pdf_dir,workspace
 from get_rag_1 import get_all_rag
 import sys,re,json,os
 from typing import Callable
@@ -14,8 +14,8 @@ def regis_func(
     f = caller.register_for_llm(name=name, description=description,api_style=api_type)(f)
     executor.register_for_execution(name=name)(f)
     
-def writeinfo(papername:str,score:str,comment:str)->str:
-    with open(f"{chatout_dir}/second_round.txt", mode='a+') as filename:
+def writeinfo(papername:str,score:str,comment:str,number:int)->str:
+    with open(f"{workspace}/out/2_out_{number}.txt", mode='a+') as filename:
         filename.write(papername)
         filename.write('\n')
         filename.write(score)
@@ -25,7 +25,7 @@ def writeinfo(papername:str,score:str,comment:str)->str:
         filename.write('\n')
         return "Write Excute Success"
     
-def group_chat(pdf:list,retrieval_function):
+def group_chat(number:int,pdf:list,retrieval_function):
     '''
     simulate the round table of paper review
     '''
@@ -119,7 +119,7 @@ They should compare the advantages and disadvantages of all papers in {pdf} and 
 They must generate the review comments of every paper. The review comments of each paper should be personalized and pertinence and it should include the advantages and disadvantages of corresponding paper.
 
 - Step 4:SCORE ALL PAPERS.
-They must think step by step. Then decide a final score of every paper based on the responses of all tool calls and the comparison. (The maximum score is 100, which should be accurate to two decimal places.) 
+They must think step by step. Then decide a final score of every paper based on the responses of all tool calls and the comparison. (The maximum score is 100.00, which should be accurate to two decimal places.) 
 
 - Step 5:EXPLAIN THE SCORES.
 At the same time, they must explain why they give that score to the papers. 
@@ -127,12 +127,15 @@ At the same time, they must explain why they give that score to the papers.
 - Step 6:REPLY EVERY PAPER'S INFORMATION.
 After they explain the scores, they just need to reply every paper's information in the template of the following examples and terminate the conversation.
 Here is the template of one paper's information, you must follow this format to output the information:
-**Paper:**\n<paper's name>\n
-**Comment:**\n<comment on paper>\n
-**Score:**\n<score of paper>\n
+**Paper:**
+<paper's name>
+**Comment:**
+<comment on paper>
+**Score:**
+<score of paper>
 '''
-    sys.stdout=open(f"{chatout_dir}/chatout2","a+")
-    a=user_proxy.initiate_chat(manager,message=message,max_turns=100)
+    sys.stdout=open(f"{workspace}/chat/2_chat_{number}","a+")
+    a=user_proxy.initiate_chat(manager,message=message,max_turns=50)
     sys.stdout=sys.__stdout__
 
     s=""
@@ -146,7 +149,7 @@ Here is the template of one paper's information, you must follow this format to 
     if len(paper_sections)!=len(pdf):
         return False
     for element in paper_sections:
-        writeinfo(element[0].replace(':','').replace('\n','').rstrip(),element[2],element[1].replace('\n',''))
+        writeinfo(element[0].replace(':','').replace('\n','').replace('*','').rstrip(),element[2],element[1].replace('\n',''),number)
         
     return True
 

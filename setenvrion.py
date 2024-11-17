@@ -2,17 +2,19 @@ import os,math
 
 AcceptRate=0.4#114/290,for the acceptrate,we design strategy like 5->3->2
 #for ensuring the acceptrate,plz set the pdf numbers to be times of workload, current is 5x.
-
-chatout_dir="./txt"
+processnum=2
+#chatout_dir="./txt"
 log_dir="./log"
 execute_log="./executelog"
-pdf_dir="./paper_pdfs copy"
+pdf_dir="./paper_pdfs"
 #NOTE:this,recover check layout,global FirstNum,FinalNum
 
 template_dir="./layout_template"
 image_dir="./images"
 xls_dir="./xls"
-workload=10#num of reviewing paper per agent
+workspace="./workspace"
+
+workload=5#num of reviewing paper per agent
 random_round=1#num of repeat rounds for reviewing a group of papers
 ModelName="gpt-4o-mini"
 
@@ -189,9 +191,9 @@ def ComputeNum():
     return count
 
 
-TotalNum=ComputeNum()
-FirstNum=174
+#TotalNum=ComputeNum()
+#FirstNum=174
 #FirstNum=int(TotalNum*0.6)#290*0.6
 #FinalNum=math.ceil(TotalNum*AcceptRate)
-FinalNum=116
+#FinalNum=116
 # the wrong layout papers' propotion should not be more than 40%

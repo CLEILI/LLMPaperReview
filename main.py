@@ -1,18 +1,95 @@
 from get_rag_1 import get_all_rag
 #from get_ag_rag import get_all_rag_1
 from part_review_2 import review,check_layout
-from setenvrion import get_llm_config,chatout_dir,log_dir,pdf_dir,workload,random_round
-from primary_screen import primary_screen,getpdfs
-from secondary_screen import secondary_screen
+from setenvrion import get_llm_config,log_dir,pdf_dir,workload,random_round,workspace,processnum
+from primary_screen import primary_screen_1,getpdfs,ReviewedPaper
+from secondary_screen import secondary_screen_1
 from groupchat_1 import group_chat
-from dealfile import copy_file,clear_file,conversation_log,write_log,chatoutclear,durationtime
+from dealfile import copy_file,clear_file,conversation_log,write_log,durationtime,copyworkspace2log,clear_folder
 from recover import read_log
 from readxls import similarity
-import os,random,datetime
+import os,random,datetime,threading,multiprocessing
 
 RED="\033[31m"
 MAGENTA = "\033[35m"
 RESET = "\033[0m"#set for observing the terninal output information
+
+#the api may full load and dont review some paper.
+def check(allpdfs:list,round:int):
+    if round==1:
+        reviewedpdfs=[]
+        needreview=[]
+        for filename in os.listdir(workspace+"/out"):#read all out file
+            if filename[0]=="1":
+                f=open(f"{workspace}/out/{filename}","r")
+                temp=[]
+                lines=f.readlines()
+                size=4
+                r=0
+                for i in range(0,len(lines),size):
+                    data=lines[i:i+size]
+                    reviewedpdfs.append(data[0][0:-1].replace(':',''))
+        needreview=list(set(allpdfs).difference(set(reviewedpdfs)))
+
+        for j in range(0,len(needreview),workload*10):# one loop at most 50 papers->10 process to reduce the load2api
+            process1=[]
+            for i in range(j,j+workload*10 if j+workload*10<len(needreview) else len(needreview),workload):#loop workload 
+                pdf=needreview[i:i+workload]
+                number=int(i/workload)
+                process=multiprocessing.Process(target=retryreview,args=(1000+number,pdf,10000+i))
+                #1003,10003 represent the checked review.
+                process1.append(process)
+                process.start()
+
+            for process in process1:
+                process.join()
+        
+    if round==2:
+        reviewedpdfs=[]
+        needreview=[]
+        for filename in os.listdir(workspace+"/out"):#read all out file
+            if filename[0]=="2":
+                f=open(f"{workspace}/out/{filename}","r")
+                lines=f.readlines()
+                size=4
+                for i in range(0,len(lines),size):
+                    data=lines[i:i+size]
+                    reviewedpdfs.append(data[0][0:-1].replace(':',''))
+        needreview=list(set(allpdfs).difference(set(reviewedpdfs)))
+
+        for j in range(0,len(needreview),workload*6):
+                process2=[]
+                for i in range(j,j+workload*6 if j+workload*6<len(needreview) else len(needreview),int(workload*0.6)):
+                    pdf=needreview[i:i+int(workload*0.6)]
+                    number=int(i/int(workload*0.6))
+                    process=multiprocessing.Process(target=retrygroupchat,args=(1000+number,pdf,10000+i))
+                    process2.append(process)
+                    process.start()
+
+                for process in process2:
+                    process.join()
+
+def retryreview(number:int,pdf:list,i:int):
+    retrieval_function=get_all_rag(pdf)
+    retry=10
+    tag=False
+    while not tag:
+        tag=review(number,pdf,retrieval_function)#to prevent gpt just pre return {"comment" and get less paper outcome
+        retry-=1
+        if retry==0:
+            break
+    print(f"{MAGENTA}{i}-{i+len(pdf)} papers down{RESET}")
+
+def retrygroupchat(number:int,pdf:list,i:int):
+    retrieval_function=get_all_rag(pdf)
+    retry=10
+    tag=False
+    while not tag:
+        tag=group_chat(number,pdf,retrieval_function)
+        retry-=1
+        if retry==0:
+            break
+    print(f"{MAGENTA}{i}-{i+len(pdf)} papers down{RESET}")
 
 def reviewallpaper():
     config=get_llm_config()#to set environment variable
@@ -29,197 +106,62 @@ def reviewallpaper():
             new_filename,_ = os.path.splitext(filename)
             pdfs.append(new_filename)
 
+    random.shuffle(pdfs)
     #NOTE: recover this section code
     '''for i in range(len(pdfs) - 1, -1, -1):
         if check_layout(pdfs[i])=="NO":
             print(f"{pdfs[i]} layout wrong")
             pdfs.remove(pdfs[i])#The num of wrong layout should be less that 40%
         print(f"{i} check down")'''
-
     write_log(pdfs)
-    retrieval_function=get_all_rag(pdfs)
+    #retrieval_function=get_all_rag(pdfs)
 
     #TODO:add a function to deal with papers less than 5
 
-    for j in range(0,random_round):
-        write_log(pdfs)
-
-        for i in range(0,len(pdfs),workload):#loop workload 
+    for j in range(0,len(pdfs),workload*processnum):# one loop at most 50 papers->10 process to reduce the load2api
+        process1=[]
+        for i in range(j,j+workload*processnum if j+workload*processnum<len(pdfs) else len(pdfs),workload):#loop workload 
             pdf=pdfs[i:i+workload]
-            retry=10
-            tag=False
-            while not tag:
-                tag=review(pdf,retrieval_function)#to prevent gpt just pre return {"comment" and get less paper outcome
-                retry-=1
-                if retry==0:
-                    break
-            print(f"{MAGENTA}First round {j} times {i}-{i+len(pdf)} papers down{RESET}")
+            number=int(i/workload)
+            process=multiprocessing.Process(target=retryreview,args=(number,pdf,i))
+            process1.append(process)
+            process.start()
 
-        copy_file(chatout_dir+"/chatout1",chatout_dir+f"/chatout1_{j}")
-        conversation_log(chatout_dir+"/chatout1",log_dir,f"chatout1_{j}")
-        copy_file(chatout_dir+"/first_round.txt",chatout_dir+f"/first_round_{j}.txt")
-        conversation_log(chatout_dir+"/first_round.txt",log_dir,f"first_round_{j}")
-        clear_file(chatout_dir+"/chatout1")
-        clear_file(chatout_dir+"/first_round.txt")
-        #print(pdfs)
-        random.shuffle(pdfs)
-        write_log(f"1_round_{j}")
+        for process in process1:
+            process.join()
 
-    first_round_pdfs=primary_screen()
+    check(pdfs,1)
+    write_log("1")
+
+    first_round_pdfs=primary_screen_1()
     print(first_round_pdfs)
     print(len(first_round_pdfs))
-
-    for j in range(0,random_round):
-        write_log(first_round_pdfs)
-
-        for i in range(0,len(first_round_pdfs),int(workload*0.6)):
-            pdf=first_round_pdfs[i:i+int(workload*0.6)]
-            retry=10
-            tag=False
-            while not tag:
-                tag=group_chat(pdf,retrieval_function)
-                retry-=1
-                if retry==0:
-                    break
-            print(f"{MAGENTA}Second round {j} times {i}-{i+len(pdf)} papers down{RESET}")
-
-        copy_file(chatout_dir+"/chatout2",chatout_dir+f"/chatout2_{j}")
-        conversation_log(chatout_dir+"/chatout2",log_dir,f"chatout2_{j}")
-        copy_file(chatout_dir+"/second_round.txt",chatout_dir+f"/second_round_{j}.txt")
-        conversation_log(chatout_dir+"/second_round.txt",log_dir,f"second_round_{j}")
-        clear_file(chatout_dir+"/chatout2")
-        clear_file(chatout_dir+"/second_round.txt")
-        #print(first_round_pdfs)
-        random.shuffle(first_round_pdfs)
-        write_log(f"2_round_{j}")
-    
-    internal=durationtime()
-    final_pdfs=secondary_screen()
-    print(f"Selected pdfs are \n{final_pdfs}")
-
-    result=similarity(final_pdfs)
-    print(f"Duration Time is {internal}")
-    print(f"The result of this execution is {result}")
-
-    write_log(final_pdfs)
-    write_log(f"Duration Time is {internal}")
-    write_log(f"Similarity is {result*100}%")
-    write_log("successful")
-
-    chatoutclear()
-
-def recover_from_log(pdfs:str,successround:int):
-
-
-    get_llm_config()
-    
-
-    round=int(successround/random_round)
-    recoverbegin=successround%random_round
-    firstbegin=0
-    secondbegin=0
-    firstend=0
-    secondend=0
-    reviewedpdfs=[]
-    if round==0:
-        reviewedpdfs=getpdfs(chatout_dir+"/first_round.txt")
-        firstbegin=recoverbegin
-        firstend=random_round
-        secondbegin=0
-        secondend=random_round
-
-    elif round==1:
-        reviewedpdfs=getpdfs(chatout_dir+"/second_round.txt")
-        firstbegin=0
-        firstend=0
-        secondbegin=recoverbegin
-        secondend=random_round
-
-    
-    needreviewed=list(set(pdfs).difference(set(reviewedpdfs)))
-    print(f"recover begin {round+1}_{recoverbegin}")
-    if successround==random_round*2-1:
-        retrieval_function=get_all_rag(needreviewed)
-    elif successround==random_round*2:
-        print("Dont need embeding")
-    else:
-        retrieval_function=get_all_rag(pdfs)
-
-    for j in range(firstbegin,firstend):
-        write_log(pdfs)
-        if round==0 and j==firstbegin:
-            for i in range(0,len(needreviewed),workload):#loop workload 
-                pdf=needreviewed[i:i+workload]
-                retry=10
-                tag=False
-                while not tag:
-                    tag=review(pdf,retrieval_function)
-                    retry-=1
-                    if retry==0:
-                        break
-                print(f"{RED}First round {j} times {i+len(reviewedpdfs)}-{i+len(pdf)+len(reviewedpdfs)} papers down{RESET}")
-        else:
-            for i in range(0,len(pdfs),workload):#loop workload 
-                pdf=pdfs[i:i+workload]
-                retry=10
-                tag=False
-                while not tag:
-                    tag=review(pdf,retrieval_function)
-                    retry-=1
-                    if retry==0:
-                        break
-                print(f"{RED}First round {j} times {i}-{i+len(pdf)} papers down{RESET}")
-        copy_file(chatout_dir+"/chatout1",chatout_dir+f"/chatout1_{j}")
-        conversation_log(chatout_dir+"/chatout1",log_dir,f"chatout1_{j}")
-        copy_file(chatout_dir+"/first_round.txt",chatout_dir+f"/first_round_{j}.txt")
-        conversation_log(chatout_dir+"/first_round.txt",log_dir,f"first_round_{j}")
-        clear_file(chatout_dir+"/chatout1")
-        clear_file(chatout_dir+"/first_round.txt")
-        print(pdfs)
-        random.shuffle(pdfs)
-        write_log(f"1_round_{j}")
-
-    first_round_pdfs=primary_screen()
-    #first_round_pdfs=pdfs
-    print(first_round_pdfs)
-    print(f"length of first round pdfs is {len(first_round_pdfs)}")
+    firsimilarity=similarity(first_round_pdfs)
+    print(f"{MAGENTA}First round similarity is {firsimilarity}{RESET}")
+    #TODO:for all pdfs
+    #if firsimilarity<0.9:
+    #    exit()
+    write_log(f"firsimilarity is {firsimilarity}")
     write_log(first_round_pdfs)
-    for j in range(secondbegin,secondend):
-        write_log(first_round_pdfs)
-        if round==1 and j==secondbegin:
-            for i in range(0,len(needreviewed),int(workload*0.6)):#loop workload 
-                pdf=needreviewed[i:i+int(workload*0.6)]
-                retry=10
-                tag=False
-                while not tag:
-                    tag=group_chat(pdf,retrieval_function)
-                    retry-=1
-                    if retry==0:
-                        break    
-                print(f"{RED}Second round {j} times {i+len(reviewedpdfs)}-{i+len(pdf)+len(reviewedpdfs)} papers down{RESET}")
-        else:
-            for i in range(0,len(first_round_pdfs),int(workload*0.6)):
-                pdf=first_round_pdfs[i:i+int(workload*0.6)]
-                retry=10
-                tag=False
-                while not tag:
-                    tag=group_chat(pdf,retrieval_function)
-                    retry-=1
-                    if retry==0:
-                        break
-                print(f"{RED}Second round {j} times {i}-{i+len(pdf)} papers down{RESET}")
-        copy_file(chatout_dir+"/chatout2",chatout_dir+f"/chatout2_{j}")
-        conversation_log(chatout_dir+"/chatout2",log_dir,f"chatout2_{j}")
-        copy_file(chatout_dir+"/second_round.txt",chatout_dir+f"/second_round_{j}.txt")
-        conversation_log(chatout_dir+"/second_round.txt",log_dir,f"second_round_{j}")
-        clear_file(chatout_dir+"/chatout2")
-        clear_file(chatout_dir+"/second_round.txt")
-        print(first_round_pdfs)
-        random.shuffle(first_round_pdfs)
-        write_log(f"2_round_{j}")
+
+    for j in range(0,len(first_round_pdfs),workload*0.6*processnum):
+        process2=[]
+        for i in range(j,j+workload*0.6*processnum if j+workload*0.6*processnum<len(first_round_pdfs) else len(first_round_pdfs),int(workload*0.6)):
+            pdf=first_round_pdfs[i:i+int(workload*0.6)]
+            number=int(i/int(workload*0.6))
+            process=multiprocessing.Process(target=retrygroupchat,args=(number,pdf,i))
+            process2.append(process)
+            process.start()
+
+        for process in process2:
+            process.join()
+
     
+    check(first_round_pdfs,2)
+    #write_log("2")
+
     internal=durationtime()
-    final_pdfs=secondary_screen()
+    final_pdfs=secondary_screen_1()
     print(f"Selected pdfs are \n{final_pdfs}")
 
     result=similarity(final_pdfs)
@@ -231,14 +173,135 @@ def recover_from_log(pdfs:str,successround:int):
     write_log(f"Similarity is {result*100}%")
     write_log("successful")
 
-    chatoutclear()
+    copyworkspace2log()
+    clear_folder(f"{workspace}/chat")
+    clear_folder(f"{workspace}/out")
+
+def recover(pdfs:list,successround:int):
+    get_llm_config()
+    reviewed=[]
+    load=0
+    if successround==0:
+        load=5
+    else:
+        load=3
+    for filename in os.listdir(workspace+"/out"):#read all out file
+        if filename[0]==str(successround+1):
+            f=open(f"{workspace}/out/{filename}","r")
+            lines=f.readlines()
+            size=4
+            r=0
+
+            if len(lines)<(size*load):
+                clear_file(f"{workspace}/out/{filename}")
+                continue
+            for i in range(0,len(lines),size):
+                data=lines[i:i+size]
+                a=ReviewedPaper()
+                a.name=data[0][0:-1]#delete \n
+                a.name=a.name.replace(':','')#delete ":"
+                a.score=data[1][0:-1]
+                a.comment=data[2][0:-1]
+                a.rank=r
+                reviewed.append(a.name)
+                r=(r+1)%workload
+    needreview=list(set(pdfs).difference(set(reviewed)))
+    #retrieval_function=get_all_rag(needreview)
+#'A Green and Efficient Method For Evaluating IoT System Reliability with Dependent Evidence Fusion'
+#'A Green and Eﬃcient Method For Evaluating IoT System Reliability with Dependent Evidence Fusion'
+#'A Green and Efficient Method For Evaluating IoT System Reliability with Dependent Evidence Fusion'
+    if successround==0:
+        for j in range(0,len(needreview),workload*processnum):
+            process1=[]
+            for i in range(j,j+workload*processnum if j+workload*processnum<len(needreview) else len(needreview),workload):#loop workload 
+                pdf=needreview[i:i+workload]
+                number=int(len(reviewed)/workload)+int(i/workload)
+                process=multiprocessing.Process(target=retryreview,args=(number,pdf,i+len(reviewed)))
+                process1.append(process)
+                process.start()
+
+            for process in process1:
+                process.join()
+
+        check(pdfs,1)
+        write_log("1")
+        first_round_pdfs=primary_screen_1()
+        print(first_round_pdfs)
+        print(len(first_round_pdfs))
+        print(f"{MAGENTA}First round similarity is {similarity(first_round_pdfs)}{RESET}",)
+        write_log(first_round_pdfs)
+
+        for j in range(0,len(first_round_pdfs),workload*0.6*processnum):
+            process2=[]
+            for i in range(j,j+workload*0.6*processnum if j+workload*0.6*processnum<len(first_round_pdfs) else len(first_round_pdfs),int(workload*0.6)):
+                pdf=first_round_pdfs[i:i+int(workload*0.6)]
+                number=int(i/int(workload*0.6))
+                process=multiprocessing.Process(target=retrygroupchat,args=(number,pdf,i))
+                process2.append(process)
+                process.start()
+
+            for process in process2:
+                process.join()
+        
+        check(first_round_pdfs,2)
+        internal=durationtime()
+        final_pdfs=secondary_screen_1()
+        print(f"Selected pdfs are \n{final_pdfs}")
+
+        result=similarity(final_pdfs)
+        print(f"Duration Time is {internal}")
+        print(f"The result of this execution is {result}")
+
+        write_log(final_pdfs)
+        write_log(f"Duration Time is {internal}")
+        write_log(f"Similarity is {result*100}%")
+        write_log("successful")
+
+        copyworkspace2log()
+        clear_folder(f"{workspace}/chat")
+        clear_folder(f"{workspace}/out")
+
+    else:
+        
+        first_round_pdfs=primary_screen_1()
+        print(f"{MAGENTA}First round similarity is {similarity(first_round_pdfs)}{RESET}",)
+        write_log(first_round_pdfs)
+        for j in range(0,len(needreview),workload*0.6*processnum):
+            process2=[]
+            for i in range(j,j+workload*0.6*processnum if j+workload*0.6*processnum<len(needreview) else len(needreview),int(workload*0.6)):
+                pdf=needreview[i:i+int(workload*0.6)]
+                number=int(len(reviewed)/3)+int(i/int(workload*0.6))
+                process=multiprocessing.Process(target=retrygroupchat,args=(number,pdf,i+len(reviewed)))
+                process2.append(process)
+                process.start()
+
+            for process in process2:
+                process.join()
+        
+        check(pdfs,2)
+        internal=durationtime()
+        final_pdfs=secondary_screen_1()
+        print(f"Selected pdfs are \n{final_pdfs}")
+
+        result=similarity(final_pdfs)
+        print(f"Duration Time is {internal}")
+        print(f"The result of this execution is {result}")
+
+        write_log(final_pdfs)
+        write_log(f"Duration Time is {internal}")
+        write_log(f"Similarity is {result*100}%")
+        write_log("successful")
+
+        copyworkspace2log()
+        clear_folder(f"{workspace}/chat")
+        clear_folder(f"{workspace}/out")
     
 def main():
     issuccess,pdfs,successround=read_log()
     if issuccess:
         reviewallpaper()
     else:
-        recover_from_log(pdfs,successround)
+        recover(pdfs,successround)
 
 
 if __name__ == '__main__':

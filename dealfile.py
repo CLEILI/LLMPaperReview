@@ -1,5 +1,5 @@
-import datetime,os,re
-from setenvrion import log_dir,chatout_dir,execute_log
+import datetime,os,re,shutil
+from setenvrion import log_dir,execute_log,workspace
 
 def copy_file(source_file, destination_file):
     with open(source_file, 'r') as source:
@@ -11,10 +11,17 @@ def clear_file(source_file):
     with open(source_file, 'w+') as source:
         source.truncate(0)
 
-def chatoutclear():
-    for filename in os.listdir(chatout_dir):
-        filepath=os.path.join(chatout_dir,filename)
-        clear_file(filepath)
+def clear_folder(folder_path):
+
+    for filename in os.listdir(folder_path):
+        file_path = os.path.join(folder_path, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.remove(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print(f"Failed to delete {file_path}. Reason: {e}")
         
 def conversation_log(source_file, destination_path,name):
     '''
@@ -55,6 +62,10 @@ def durationtime():
 
     return str(internal)
 
+def copyworkspace2log():
+    new_name=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
+    dst_path = os.path.join(log_dir, new_name)
+    shutil.copytree(workspace, dst_path)
 
 def test():
     conversation_log("./ai_review/txt/chatout1_0","./ai_review/log","chatout1_0")
