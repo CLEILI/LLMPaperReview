@@ -8,20 +8,15 @@ def pdf2image1(pdf,path1, path2):
     pg=0
     page = pdfDoc.load_page(pg)
 
-    # 获取页面的图像对象
-    # matrix = fitz.Matrix(1.0, 1.0)  # 1.0 表示原始尺寸
-    # pix = page.get_pixmap(matrix=matrix,dpi=200)
     pix = page.get_pixmap(matrix=fitz.Matrix(4,4))
 
     print(pix.width, pix.height)
-    # 将图像转换为Pillow的Image对象
+
     img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
 
-    if not os.path.exists(path2):  # 判断存放图片的文件夹是否存在
-        os.makedirs(path2)  # 若图片文件夹不存在就创建
+    if not os.path.exists(path2):  
+        os.makedirs(path2)  
 
-    # 保存图像为PNG格式，不进行压缩
-    # dpi = 96  # 设置所需的 DPI 值
     img.save(path2 + '/' + f'{pdf}.jpg', )
     # img.save(f'output_{page_number}.png',)
 

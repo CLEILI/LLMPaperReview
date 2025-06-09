@@ -1,7 +1,7 @@
-import os
+import os,json,re
 from autogen import AssistantAgent,UserProxyAgent,register_function
 import sys
-from setenvrion import get_llm_config,template_dir,image_dir,chatout_dir,layout_config,googleSearchKey,workload
+from setenvrion import get_llm_config,template_dir,image_dir,layout_config,googleSearchKey,pdf_dir,workspace
 from serpapi import GoogleSearch
 from autogen.agentchat.contrib.multimodal_conversable_agent import MultimodalConversableAgent
 from get_rag import get_all_rag
@@ -30,7 +30,7 @@ def check_layout(pdfname:str)->str:
         },
     )
     
-    sys.stdout=open(chatout_dir+"/chatout1","a+")
+    #sys.stdout=open(chatout_dir+"/chatout1","a+")
     a=user_proxy.initiate_chat(
     image_agent,
     message=f"""
@@ -42,12 +42,12 @@ def check_layout(pdfname:str)->str:
     At last just need to reply YES or NO.
     """,
 )
-    sys.stdout=sys.__stdout__
+    #sys.stdout=sys.__stdout__
     flag=a.chat_history[-1]["content"]
     return flag
 
-def writeinfo(papername:str,score:str,comment:str)->str:
-    with open(chatout_dir+"/first_round.txt", mode='a+') as filename:#a+(append) w+(from top)
+def writeinfo(papername:str,score:str,comment:str,number:int)->str:
+    with open(workspace+f"/out/1_out_{number}.txt", mode='a+') as filename:#a+(append) w+(from top)
         filename.write(papername)
         filename.write('\n')
         filename.write(score)
@@ -70,13 +70,14 @@ def search_google_scholar(keyword:str)->str:
     #print(result)
     return [item['snippet'] for item in result['organic_results']]
 
-def review(pdf:list,retrieval_functions:dict):
+def review(number:int,pdf:list,retrieval_function):
     '''
     review the paper and record the conversation in chatout1
     '''
     assistant = AssistantAgent(
         name="assistant",
         llm_config=get_llm_config(),
+        system_message="You are a paper review AI assistant."
     )
 
     user_proxy = UserProxyAgent(
@@ -85,25 +86,26 @@ def review(pdf:list,retrieval_functions:dict):
         #max_consecutive_auto_reply=4,
         code_execution_config=False,
         llm_config=get_llm_config(),
-        system_message="""Reply TERMINATE if the task has been solved at full satisfaction.
-        Otherwise, reply CONTINUE, or the reason why the task is not solved yet.""",
+        #system_message="""Reply TERMINATE if the task has been solved at full satisfaction.
+        #Otherwise, reply CONTINUE, or the reason why the task is not solved yet.""",
         #function_map={f"answer_{i}": retrieval_functions[pdf[i]] for i in range(len(pdf))}
+        is_termination_msg=lambda msg: "{\"comment\":" in str(msg["content"]) or "**Paper:**" in str(msg["content"]),
     )
-    for i in range(len(pdf)):
-        register_function(
-        retrieval_functions[pdf[i]],
-        caller=assistant,
-        executor=user_proxy,
-        name=f"answer_{i}",
-        description=f"useful when you want to answer questions about the paper named \"{pdf[i]}\"",
-    )
+    #for i in range(len(pdf)):
     register_function(
-        writeinfo,
-        caller=assistant,
-        executor=user_proxy,
-        name="writeinfo",
-        description="useful when need to write papername, corresponding score and review comments into designative txt file",
-    )
+    retrieval_function,
+    caller=assistant,
+    executor=user_proxy,
+    name="QuestionAnswer",
+    description=f"useful when you want to answer questions about the papers",
+)
+    register_function(
+    check_layout,
+    caller=assistant,
+    executor=user_proxy,
+    name="layoutchecker",
+    description=f"useful when you want to check the layout of the paper",
+)
     '''register_function(
         search_google_scholar,
         caller=assistant,
@@ -113,47 +115,103 @@ def review(pdf:list,retrieval_functions:dict):
     )'''
 
     standards="""
-    1. The paper should have a strong research background and address an important question.
-    2. The paper should have a complete paper structure.
-    3. The paper should have a clear theme, analysis, and conclusion.
-    4. The content of the paper must be original to enhance the existing knowledge system in the given topic area.
-    5. Experiments, statistics, and other analyses must be conducted in accordance with high-tech standards and described in sufficient detail. Experiments, data, and analysis should be able to support the current conclusion.
-    6. If there is algorithm design, it is necessary to ensure that the algorithm is feasible and effective.
-    7. The conclusion must be clear, correct, reliable, and valuable.
-    8. The paper should have a certain contribution and driving effect on the given thematic area.
+    The paper should have a strong research background and address an important question.
+    The paper should have a complete paper structure.
+    The paper should have a clear theme, analysis, and conclusion.
+    The content of the paper must be original to enhance the existing knowledge system in the given topic area.
+    Experiments, statistics, and other analyses must be conducted in accordance with high-tech standards and described in sufficient detail. Experiments, data, and analysis should be able to support the current conclusion.
+    If there is algorithm design, it is necessary to ensure that the algorithm is feasible and effective.
+    The conclusion must be clear, correct, reliable, and valuable.
+    The paper should have a certain contribution and driving effect on the given thematic area.
     """
     message=rf"""
     Assume you are a reviewer of a conference, your job is to review papers in {pdf} and give every paper a reasonable score.
-    
-    To find the paper related content, you are supposed to call answer functions. In your question, there must be the paper's name!
+    To review the papers, you must finish this job step-by-step:
+    - Step 1:CHECK PAPER'S LAYOUT.
+    You should check the layout of the paper by calling layoutchecker function. 
+    If the answer is "YES", then the paper's layout is qualified and the paper can proceed to the following steps. 
+    If the answer is "NO", then the paper's layout is not qualified, and this paper does not need to proceed to the next evaluation steps. The score of this paper will be set to 0.00 and the comments will be left blank.
+
+    - Step 2:EVALUATE QUALIFIED PAPERS. 
+    To find the paper related content, you are supposed to call the QuestionAnswer function.
     You cannot ask vague questions. It is recommended that your questions based on each of the following standords. 
-    
-    To review the papers, you should check that if every paper in {pdf} meets each of the following standards one bye one: 
+    To evaluate the qualified papers, you should check that if the paper meets each of the following standards one bye one: 
     {standards}
-    Pay attention to using uniform evaluation standards for all papers.
+    For the questions, you should not response "I don't know"!
+    At this time, you should provide the basis for your answer, that is, which content in this paper did you derive this answer from.
+    Pay attention to using uniform evaluation standards for the papers. In your questions, there must be the paper's name.
+    Here are the examples of your questions of paper named 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN':
+    "Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a strong research background and address an important question?"
+    "Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a complete paper structure?"
+    "Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a clear theme, analysis, and conclusion?"
+    "Is the content of 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' original and does it enhance the existing knowledge system in the given topic area?"
+    "Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' conduct experiments, statistics, and analyses in accordance with high-tech standards and describe them in sufficient detail?"
+    "Is the algorithm in 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' feasible and effective?"
+    "Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a clear, correct, reliable, and valuable conclusion?"
+    "Does the paper 'FEKNN A Wi-Fi Indoor Localization Method Based on Feature Enhancement and KNN' have a certain contribution and driving effect on the given thematic area?"
 
-    After evaluating all the standards, you must think step by step, compare all papers and give a final score of every paper based on the responses of all tool calls. (The maximum score is 100, which should be accurate to two decimal places.) Then, write the papername, score, and the review comments of each paper into the designative txt file. 
-    The review comments should be personalized and pertinence and it should include the advantages and disadvantages of corresponding paper. The review comments should not have a "\n". 
+    - Step 3:COMPARE THE PAPERS. 
+    You should compare the advantages and disadvantages of the papers and give a rank of these papers.
 
-    Note that the assistant must call registered writeinfo function at the end of the conversation to write the above information and user_proxy execute the writeinfo function! Don't need to write code again! The papername that you wanna write should not have a ":".
-    Please check if all papers have been written to the file. If so, just terminate the conversation.
+    - Step 4:GENERATE REVIEW COMMENTS.
+    You must generate the review comments of the paper. The review comments of each paper should be personalized and pertinence and it should include the advantages and disadvantages of corresponding paper.
+
+    - Step 5:SCORE ALL PAPERS.
+    You must think step by step. Then decide a final score of the paper based on the responses of all tool calls and the comparison. (The maximum score is 100.00, which should be accurate to two decimal places.) 
+    Note that the paper with disqualified layout should be given a score of 0.00.
+    
+    - Step 6:EXPLAIN THE SCORES.
+    At the same time, you must explain why you give that score to the papers. 
+
+    - Step 7:REPLY ALL PAPERS' INFORMATION.
+    After you explain the scores, you just need to reply the information of all paper in {pdf} in the template of the following examples and terminate the conversation.
+    Here is the template of one paper's information, you must follow this format to output the information:
+    **Paper:**\n<paper's name>\n**Comment:**\n<comment on paper>\n**Score:**\n<score of paper>\n
 
     Start the work now.
     """
     
-    sys.stdout=open(chatout_dir+"/chatout1","a+")
-    user_proxy.initiate_chat(assistant,message=message)
+    sys.stdout=open(workspace+f"/chat/1_chat_{number}","a+")
+    a=user_proxy.initiate_chat(assistant,message=message,max_turns=30)
     sys.stdout=sys.__stdout__
 
+    s=""
+
+    for i in range(-1,-5,-1):
+        if "**Paper:**" in a.chat_history[i]['content']:
+            s=a.chat_history[i]['content']
+            break
+
+    pattern=r'\*\*Paper:\*\*\s*(.*?)\n\*\*Comment:\*\*\s*(.*?)\n\*\*Score:\*\*\s*([0-9.]+)'
+    paper_sections = re.findall(pattern, s)
+    if len(paper_sections)<len(pdf):
+        return False
+    for element in paper_sections:
+        writeinfo(element[0].replace(':','').replace('\n','').replace('*','').rstrip(),element[2],element[1].replace('\n',''),number)
+
+    return True
 
 def testfunc():
     get_llm_config()
-    pdf=["A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm",
-         "A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems",
-         "An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario",]
-    retrieval_function=get_all_rag(pdf)
-    review(pdf,retrieval_function)
+    pdfs=[]
+    pdfs_path=pdf_dir
+    for filename in os.listdir(pdfs_path):#read all pdf names
+        if filename.endswith('.pdf'):
+            new_filename,_ = os.path.splitext(filename)
+            pdfs.append(new_filename)
+    retrieval_function=get_all_rag(pdfs[0:5])
+    review(pdfs[0:5],retrieval_function)
 
 
+'''d={'content': '{"comment": "This paper introduces a framework utilizing deep learning techniques to enhance data quality in mobile crowd sensing. It presents innovative solutions to current gaps related to data reliability, although specific details regarding the completeness of the paper structure and high-tech standards for experiments are lacking. The results are promising but require comprehensive validation. The conclusion presented is relevant, but its overall reliability needs further evaluation.", "papername": "A Data Aggregation Framework based on Deep Learning for Mobile Crowd-sensing Paradigm", "score": "78.00"}\n{"comment": "This paper effectively addresses the pressing issue of blockchain integration through two distinct methodologies. It provides a strong structure and clear analysis, successfully demonstrating the proposed solutions\' potential impact on blockchain interoperability. While the conclusion is valuable, further empirical validation would enhance its credibility. The contributions are significant and offer promising directions for future research in this thematic area.", "papername": "A Novel Merging Framework for Homogeneous and Heterogeneous Blockchain Systems", "score": "85.00"}\n{"comment": "This paper proposes a novel approach to enhance physical layer security in mobile communication via cooperative jamming. While it provides significant contributions to the field and addresses key challenges, some details regarding the comprehensiveness of experimental validation were not assessed. Nevertheless, the conclusions drawn about the scheme\'s effectiveness are insightful and indicate a strong potential for future developments in secure transmission.", "papername": "An Effective Cooperative Jamming-based Secure Transmission Scheme for a Mobile Scenario", "score": "82.00"}', 'role': 'assistant'}
+ss=d["content"]
+pdfs=ss.split("\n")
+print(pdfs)
+dd1=json.loads(pdfs[0])
+dd2=json.loads(pdfs[1])
+dd3=json.loads(pdfs[2])
+print(dd1['comment'])
+print(dd1['score'])
+print(dd1['papername'])'''
 #testfunc()
-    
+#is terminate msg[content]={"comment"

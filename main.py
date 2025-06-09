@@ -1,10 +1,10 @@
-from get_rag_1 import get_all_rag
+from get_rag import get_all_rag
 #from get_ag_rag import get_all_rag_1
-from part_review_2 import review,check_layout
+from part_review import review,check_layout
 from setenvrion import get_llm_config,log_dir,pdf_dir,workload,random_round,workspace,processnum
 from primary_screen import primary_screen_1,getpdfs,ReviewedPaper
 from secondary_screen import secondary_screen_1
-from groupchat_1 import group_chat
+from groupchat import group_chat
 from dealfile import copy_file,clear_file,conversation_log,write_log,durationtime,copyworkspace2log,clear_folder
 from recover import read_log
 from readxls import similarity
@@ -144,7 +144,7 @@ def reviewallpaper():
     write_log(f"firsimilarity is {firsimilarity}")
     write_log(first_round_pdfs)
 
-    for j in range(0,len(first_round_pdfs),workload*0.6*processnum):
+    for j in range(0,len(first_round_pdfs),int(workload*0.6*processnum)):
         process2=[]
         for i in range(j,j+workload*0.6*processnum if j+workload*0.6*processnum<len(first_round_pdfs) else len(first_round_pdfs),int(workload*0.6)):
             pdf=first_round_pdfs[i:i+int(workload*0.6)]
@@ -207,9 +207,7 @@ def recover(pdfs:list,successround:int):
                 r=(r+1)%workload
     needreview=list(set(pdfs).difference(set(reviewed)))
     #retrieval_function=get_all_rag(needreview)
-#'A Green and Efficient Method For Evaluating IoT System Reliability with Dependent Evidence Fusion'
-#'A Green and Eﬃcient Method For Evaluating IoT System Reliability with Dependent Evidence Fusion'
-#'A Green and Efficient Method For Evaluating IoT System Reliability with Dependent Evidence Fusion'
+
     if successround==0:
         for j in range(0,len(needreview),workload*processnum):
             process1=[]
@@ -231,7 +229,7 @@ def recover(pdfs:list,successround:int):
         print(f"{MAGENTA}First round similarity is {similarity(first_round_pdfs)}{RESET}",)
         write_log(first_round_pdfs)
 
-        for j in range(0,len(first_round_pdfs),workload*0.6*processnum):
+        for j in range(0,len(first_round_pdfs),int(workload*0.6*processnum)):
             process2=[]
             for i in range(j,j+workload*0.6*processnum if j+workload*0.6*processnum<len(first_round_pdfs) else len(first_round_pdfs),int(workload*0.6)):
                 pdf=first_round_pdfs[i:i+int(workload*0.6)]
@@ -266,9 +264,9 @@ def recover(pdfs:list,successround:int):
         first_round_pdfs=primary_screen_1()
         print(f"{MAGENTA}First round similarity is {similarity(first_round_pdfs)}{RESET}",)
         write_log(first_round_pdfs)
-        for j in range(0,len(needreview),workload*0.6*processnum):
+        for j in range(0,len(needreview),int(workload*0.6*processnum)):
             process2=[]
-            for i in range(j,j+workload*0.6*processnum if j+workload*0.6*processnum<len(needreview) else len(needreview),int(workload*0.6)):
+            for i in range(j,int(j+workload*0.6*processnum) if j+workload*0.6*processnum<len(needreview) else len(needreview),int(workload*0.6)):
                 pdf=needreview[i:i+int(workload*0.6)]
                 number=int(len(reviewed)/3)+int(i/int(workload*0.6))
                 process=multiprocessing.Process(target=retrygroupchat,args=(number,pdf,i+len(reviewed)))
